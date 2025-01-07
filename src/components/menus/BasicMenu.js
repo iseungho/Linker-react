@@ -47,10 +47,6 @@ const BasicMenu = ({ children }) => {
                         </div>
                         {!loginState.email ? (
                             <div className="flex">
-                                <Link to={'/member/signup'}
-                                      className="bg-blue-400 text-white mr-2 px-4 py-2 rounded-lg hover:bg-blue-500 w-24 h-10 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm">
-                                    SignUp
-                                </Link>
                                 <button
                                     className="bg-green-400 text-white px-4 py-2 rounded-lg hover:bg-green-500 w-24 h-10 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm"
                                     onClick={openModal}>

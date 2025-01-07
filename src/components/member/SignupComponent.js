@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { signupMember } from "../../api/memberApi";
 import ResultModal from "../common/ResultModal";
 import useCustomLogin from "../../hooks/useCustomLogin";
@@ -6,92 +6,169 @@ import useCustomLogin from "../../hooks/useCustomLogin";
 const initState = {
     email: "",
     password: "",
+    confirmPassword: "",
     nickname: "",
     role: "USER"
-}
+};
 
 const SignupComponent = () => {
-    
     const [member, setMember] = useState(initState);
     const [result, setResult] = useState();
-    const [error, setError] = useState(null);
-    const { moveToPath } = useCustomLogin()
+    const [errors, setErrors] = useState({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        nickname: ""
+    });
+    const { moveToPath } = useCustomLogin();
 
     const handleChange = (e) => {
-        member[e.target.name] = e.target.value;
-        setMember({ ...member });
-    }
+        setMember({ ...member, [e.target.name]: e.target.value });
+    };
+
+    const validateForm = () => {
+        const newErrors = { email: "", password: "", confirmPassword: "", nickname: "" };
+        let isValid = true;
+
+        // 이메일 유효성 검사
+        if (!member.email) {
+            newErrors.email = "이메일을 입력해주세요.";
+            isValid = false;
+        }
+
+        // 닉네임 유효성 검사
+        if (!member.nickname) {
+            newErrors.nickname = "닉네임을 입력해주세요.";
+            isValid = false;
+        }
+
+        // 비밀번호 유효성 검사
+        if (!member.password) {
+            newErrors.password = "비밀번호를 입력해주세요.";
+            isValid = false;
+        }
+
+        // 비밀번호 확인 유효성 검사
+        if (member.password !== member.confirmPassword) {
+            newErrors.confirmPassword = "비밀번호가 일치하지 않습니다.";
+            isValid = false;
+        } else if (!member.confirmPassword) {
+            newErrors.confirmPassword = "비밀번호 확인을 입력해주세요.";
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+        return isValid;
+    };
 
     const handleClickSignup = async () => {
-        if (!member.email || !member.password || !member.nickname) {
-            setError("All fields are required.");
-            return;
-        }
+        if (!validateForm()) return;  // 유효성 검사 통과하지 않으면 종료
 
         try {
             await signupMember(member);
-            setResult('Signed up successfully');
+            setResult("회원가입 성공");
             setMember(initState);
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
                 if (error.response.data.error === "EMAIL_ALREADY_EXISTS") {
-                    setError("This email is already registered. Please use a different email.");
+                    setErrors({ ...errors, email: "이미 사용 중인 이메일입니다. 다른 이메일을 사용해 주세요." });
                 } else {
-                    setError(error.response.data.error);
+                    setErrors({ ...errors, email: error.response.data.error });
                 }
             } else {
-                setError(error.message);
+                setErrors({ ...errors, email: error.message });
             }
         }
-    }
+    };
 
     const closeModal = () => {
         setResult(null);
-        moveToPath("/")
-    }
+        moveToPath("/");
+    };
 
     return (
-        <div className="border-2 border-neutral-300 mt-10 m-2 p-4">
-            {result ? <ResultModal title={'회원가입'} content={result} callbackFn={closeModal}></ResultModal> : <></>}
-            {error ? <div className="text-red-500">{error}</div> : null}
+        <div>
+            {result ? <ResultModal title="회원가입" content={result} callbackFn={closeModal} /> : null}
 
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="p-6 text-right font-bold w-32">Email</div>
-                    <input className="p-6 rounded-r border border-solid border-neutral-300 shadow-md flex-grow"
-                        name="email" type={'text'} value={member.email} onChange={handleChange}>
-                    </input>
-                </div>
+            {/* 이메일 입력 필드 */}
+            <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-600 mb-1" htmlFor="email">
+                    이메일
+                </label>
+                <input
+                    id="email"
+                    name="email"
+                    type="text"
+                    placeholder="이메일을 입력하세요"
+                    value={member.email}
+                    onChange={handleChange}
+                    className="w-full p-3 border-2 border-gray-300 focus:outline-none focus:border-gray-500 rounded-xl"
+                />
+                {errors.email && <div className="text-red-500 text-sm mt-1">{errors.email}</div>}
             </div>
 
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="p-6 text-right font-bold w-32">Password</div>
-                    <input className="p-6 rounded-r border border-solid border-neutral-300 shadow-md flex-grow"
-                        name="password" type={'password'} value={member.password} onChange={handleChange}>
-                    </input>
-                </div>
+            {/* 닉네임 입력 필드 */}
+            <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-600 mb-1" htmlFor="nickname">
+                    닉네임
+                </label>
+                <input
+                    id="nickname"
+                    name="nickname"
+                    type="text"
+                    placeholder="닉네임을 입력하세요"
+                    value={member.nickname}
+                    onChange={handleChange}
+                    className="w-full p-3 border-2 border-gray-300 focus:outline-none focus:border-gray-500 rounded-xl"
+                />
+                {errors.nickname && <div className="text-red-500 text-sm mt-1">{errors.nickname}</div>}
             </div>
 
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                    <div className="p-6 text-right font-bold w-32">Nickname</div>
-                    <input className="p-6 rounded-r border border-solid border-neutral-300 shadow-md flex-grow"
-                        name="nickname" type={'text'} value={member.nickname} onChange={handleChange}>
-                    </input>
-                </div>
+            {/* 비밀번호 입력 필드 */}
+            <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-600 mb-1" htmlFor="password">
+                    비밀번호
+                </label>
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="비밀번호"
+                    value={member.password}
+                    onChange={handleChange}
+                    className="w-full p-3 border-2 border-gray-300 focus:outline-none focus:border-gray-500 rounded-xl"
+                />
+                {errors.password && <div className="text-red-500 text-sm mt-1">{errors.password}</div>}
             </div>
 
-            <div className="flex justify-center">
-                <div className="relative mb-4 flex w-full flex-wrap justify-end">
-                    <button type="button" onClick={handleClickSignup}
-                        className="rounded p-4 m-2 text-xl w-32 text-white bg-neutral-500">
-                        Signup
-                    </button>
-                </div>
+            {/* 비밀번호 확인 입력 필드 */}
+            <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-600 mb-1" htmlFor="confirmPassword">
+                    비밀번호 확인
+                </label>
+                <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="비밀번호 확인"
+                    value={member.confirmPassword}
+                    onChange={handleChange}
+                    className="w-full p-3 border-2 border-gray-300 focus:outline-none focus:border-gray-500 rounded-xl"
+                />
+                {errors.confirmPassword && <div className="text-red-500 text-sm mt-1">{errors.confirmPassword}</div>}
+            </div>
+
+            {/* 회원가입 버튼 */}
+            <div className="flex justify-center mb-4">
+                <button
+                    className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition duration-300 w-full"
+                    onClick={handleClickSignup}
+                >
+                    회원가입
+                </button>
             </div>
         </div>
     );
-}
+};
 
 export default SignupComponent;
