@@ -4,30 +4,37 @@ import { useSelector } from "react-redux";
 
 function MainPage(props) {
 
-    const loginState = useSelector(state => state.loginSlice);
-
     return (
         <BasicLayout>
-            <div className="w-full flex flex-wrap h-screen justify-center items-center border-2">
-                <div className="border-2 border-blue-400 mt-10 m-2 p-4">
-                    <div className="flex items-center justify-center">
-                        <div className="text-3xl">
-                            <ul className="flex p-4 text-blue-400 font-bold">
-                                {loginState.email ? (
-                                    <li className="pr-6 text-2xl">
-                                        Mno: {loginState.mno}<br />
-                                        Email: {loginState.email}<br />
-                                        Nickname: {loginState.nickname}<br />
-                                        Role: {loginState.role}<br />
-                                        Social: {loginState.social ? "true" : "false"}
-                                    </li>
-                                ) : (
-                                    <li className="pr-6 text-2xl">
-                                        우측 상단의 로그인 버튼을 눌러 로그인을 진행해주세요.
-                                    </li>
-                                )}
-                            </ul>
-                        </div>
+            <div className="w-full h-screen flex flex-col items-center">
+                {/* Header Section */}
+                <div className="w-full flex justify-between items-center p-4  mt-16">
+                    {/* Project Name and Image */}
+                    <div className="flex items-center">
+                        <img
+                            src="/path/to/your/image.png"
+                            alt="프로젝트 이미지"
+                            className="w-12 h-12 mr-4 rounded-full border"
+                        />
+                        <h1 className="text-2xl font-bold text-blue-500">프로젝트명</h1>
+                    </div>
+                    {/* Navigation Buttons */}
+                    <div className="flex space-x-4">
+                        <button className="px-4 py-2 bg-gray-300 text-white rounded hover:bg-gray-500">분실물 게시판</button>
+                        <button className="px-4 py-2 bg-gray-300 text-white rounded hover:bg-gray-500">습득물 게시판</button>
+                        <button className="px-4 py-2 bg-gray-300 text-white rounded hover:bg-gray-500">자유게시판</button>
+                    </div>
+                </div>
+
+                {/* Search Section */}
+                <div className="w-full flex flex-col items-center mt-10">
+                    <div className="flex items-center w-3/4 md:w-1/2 lg:w-1/3">
+                        <input
+                            type="text"
+                            placeholder="검색어를 입력하세요"
+                            className="flex-grow p-2 border rounded-l focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                        <button className="px-4 py-2 bg-blue-500 text-white rounded-r hover:bg-blue-600">검색</button>
                     </div>
                 </div>
             </div>
