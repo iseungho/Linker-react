@@ -11,18 +11,13 @@ function MainPage(props) {
                 <div className="w-4/5 flex justify-between items-center p-4  mt-16 ">
                     {/* Project Name and Image */}
                     <div className="flex items-center">
-                        <img
-                            src="/path/to/your/image.png"
-                            alt="프로젝트 이미지"
-                            className="w-12 h-12 mr-4 rounded-full border"
-                        />
                         <h1 className="text-2xl font-bold text-gray-600">Linker - 분실물 관리 서비스</h1>
                     </div>
                     {/* Navigation Buttons */}
-                    <div className="flex space-x-4">
-                        <button className="px-4 py-2 bg-gray-300 text-white rounded hover:bg-gray-500">분실물 게시판</button>
-                        <button className="px-4 py-2 bg-gray-300 text-white rounded hover:bg-gray-500">습득물 게시판</button>
-                        <button className="px-4 py-2 bg-gray-300 text-white rounded hover:bg-gray-500">자유게시판</button>
+                    <div className="flex">
+                        <button className="px-4 py-2 bg-gray-300 text-white rounded-l-2xl hover:bg-gray-500">분실물 게시판</button>
+                        <button className="px-4 py-2 bg-gray-300 text-white  hover:bg-gray-500">습득물 게시판</button>
+                        <button className="px-4 py-2 bg-gray-300 text-white rounded-r-2xl hover:bg-gray-500">자유게시판</button>
                     </div>
                 </div>
 

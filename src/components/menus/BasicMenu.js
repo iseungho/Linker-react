@@ -26,29 +26,28 @@ const BasicMenu = ({ children }) => {
 
     return (
         <div>
-            <nav id='navbar' className="fixed w-full space-x-6 top-0 left-0 z-50 bg-white shadow-md">
+            <nav id='navbar' className="fixed w-full space-x-6 top-0 left-0 z-50 bg-gray-100 shadow-md">
                 <div className="container mx-auto px-4 py-2 flex justify-between items-center">
                     <button
-                        className="w-12 h-12 font-bold text-gray-800"
+                        className="bg-logo-image bg-cover w-32 h-10 cursor-pointer"
                         onClick={handleClickLogo}
                     >
-                        Logo
                     </button>
                         <div className="flex space-x-6">
-                            <button className="text-gray-700 hover:text-black text-m font-medium">
+                            <button className="text-gray-700 hover:text-black text-sm">
                                 분실물 게시판
                             </button>
-                            <button className="text-gray-700 hover:text-black text-m font-medium">
+                            <button className="text-gray-700 hover:text-black text-sm">
                                 습득물 게시판
                             </button>
-                            <button className="text-gray-700 hover:text-black text-m font-medium">
+                            <button className="text-gray-700 hover:text-black text-sm">
                                 자유게시판
                             </button>
                         </div>
                         {!loginState.email ? (
                             <div className="flex">
                                 <button
-                                    className="bg-green-400 text-white px-4 py-2 rounded-lg hover:bg-green-500 w-24 h-10 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm"
+                                    className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 w-24 h-8 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm"
                                     onClick={openModal}>
                                     Login
                                 </button>
@@ -56,14 +55,14 @@ const BasicMenu = ({ children }) => {
                             </div>
                         ) : (
                             <div className="flex">
-                                <Link to={'/member/modify'} className="bg-blue-400 mr-2 text-white px-4 py-2 rounded-lg hover:bg-blue-500 w-24 h-10 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm">
-                                    Modify
+                                <Link to={'/member/modify'} className="mr-2 text-black px-4 py-2 rounded-lg hover:bg-gray-300 w-24 h-8 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm">
+                                    회원정보
                                 </Link>
                                 <button
-                                    className="bg-green-400 text-white px-4 py-2 rounded-lg hover:bg-green-500 w-24 h-10 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm"
+                                    className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 w-24 h-8 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm"
                                     onClick={handleLogout}
                                 >
-                                    Logout
+                                    로그아웃
                                 </button>
                             </div>
                         )}
