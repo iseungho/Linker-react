@@ -1,11 +1,11 @@
 import React from 'react';
 import BasicLayout from '../../layouts/BasicLayout';
-import ListComponent from "../../components/board/ListComponent";
+import FreeComponent from '../../components/board/FreeComponent';
 
 const ListPage = () => {
     return (
         <BasicLayout>
-            <ListComponent/>
+            <FreeComponent/>
         </BasicLayout>
     );
 }
