@@ -9,7 +9,7 @@ const PageComponent = ({ serverData, movePage }) => {
                     className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-400 transition duration-300"
                     onClick={() => movePage(serverData.prevPage)}
                 >
-                    Prev
+                    &lt;
                 </button>
             )}
 
@@ -33,7 +33,7 @@ const PageComponent = ({ serverData, movePage }) => {
                     className="px-4 py-2 rounded-lg text-sm font-semibold bg-gray-500 text-white hover:bg-gray-400 transition duration-300"
                     onClick={() => movePage(serverData.nextPage)}
                 >
-                    >
+                    &gt;
                 </button>
             )}
         </div>
