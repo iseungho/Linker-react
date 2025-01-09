@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageComponent from "../common/PageComponent";
+import {getBoardList} from "../../api/boardApi";
 
 // 더미 데이터
 const dummyData = {
@@ -49,6 +50,8 @@ const BoardList = () => {
         const fetchBoardList = async () => {
             setFetching(true);
             try {
+                // const data = await getBoardList({ page, size });
+                // setServerData(data);
                 // 서버 요청 대신 더미 데이터를 설정
                 setServerData(dummyData);
             } catch (error) {
@@ -67,10 +70,7 @@ const BoardList = () => {
 
     return (
         <div className="board-list-container flex justify-center mt-24">
-            <div className="board-list-wrapper w-2/3 sm:w-2/3 md:w-2/3 lg:w-3/5">
-                <div className="board-list-header flex justify-between items-center">
-                    <h2 className="board-list-title text-2xl font-semibold">게시글 목록</h2>
-                </div>
+            <div className="board-list-wrapper w-full sm:w-1/2 md:w-1/2 lg:w-2/5">
                 {fetching && <p>Loading...</p>}
 
                 {serverData.dtoList.map((board) => (
