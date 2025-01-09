@@ -34,15 +34,15 @@ const BasicMenu = ({ children }) => {
                     >
                     </button>
                         <div className="flex space-x-6">
-                            <button className="text-gray-700 hover:text-black text-sm">
+                            <Link to={'/board/lost'} className="text-gray-700 hover:text-black text-sm">
                                 분실물 게시판
-                            </button>
-                            <button className="text-gray-700 hover:text-black text-sm">
+                            </Link>
+                            <Link to={'/board/found'} className="text-gray-700 hover:text-black text-sm">
                                 습득물 게시판
-                            </button>
-                            <button className="text-gray-700 hover:text-black text-sm">
+                            </Link>
+                            <Link to={'/board/free'} className="text-gray-700 hover:text-black text-sm">
                                 자유게시판
-                            </button>
+                            </Link>
                         </div>
                         {!loginState.email ? (
                             <div className="flex">
