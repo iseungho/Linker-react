@@ -8,25 +8,28 @@ import { updateLoginInfo, clearLoginInfo } from "../../slices/loginSlice";
 const initState = {
     email: "",
     password: "",
-    nickname: ""
+    nickname: "",
+    profileImage: "" // 프로필 이미지 추가
 }
 
 const ModifyComponent = () => {
-
-    const [member, setMember] = useState(initState)
-    const loginInfo = useSelector(state => state.loginSlice)
-    const { moveToPath } = useCustomLogin()
-    const [result, setResult] = useState()
-    const [error, setError] = useState(null)
+    const [member, setMember] = useState(initState);
+    const loginInfo = useSelector(state => state.loginSlice);
+    const { moveToPath } = useCustomLogin();
+    const [result, setResult] = useState();
+    const [error, setError] = useState(null);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setMember({ ...loginInfo, email: loginInfo.email })
-    }, [loginInfo])
+        setMember({ 
+            email: loginInfo.email, 
+            nickname: loginInfo.nickname, 
+            profileImage: loginInfo.profileImage // 프로필 이미지 초기화
+        });
+    }, [loginInfo]);
 
     const handleChange = (e) => {
-        member[e.target.name] = e.target.value
-        setMember({ ...member })
+        setMember({ ...member, [e.target.name]: e.target.value });
     }
 
     const handleClickModify = async () => {
@@ -35,11 +38,11 @@ const ModifyComponent = () => {
             if (!memberToUpdate.password) {
                 delete memberToUpdate.password;
             }
-            await modifyMember(memberToUpdate, loginInfo.mno)
+            await modifyMember(memberToUpdate, loginInfo.mno);
             dispatch(updateLoginInfo(memberToUpdate));
-            setResult('Modified')
+            setResult('Modified');
         } catch (error) {
-            setError(error.response ? error.response.data.message : error.message)
+            setError(error.response ? error.response.data.message : error.message);
         }
     }
 
@@ -57,40 +60,44 @@ const ModifyComponent = () => {
     }
 
     const closeModal = () => {
-        setResult(null)
-        moveToPath("/")
+        setResult(null);
+        moveToPath("/");
     }
 
     return (
-        <div className="border-2 border-neutral-300 mt-10 m-2 p-4">
-
-            {result ? <ResultModal title={'회원정보'} content={result} callbackFn={closeModal}></ResultModal> : <></>}
+        <div className="mt-10 m-2 p-4"> {/* 테두리 관련 클래스 제거 */}
+            {result ? <ResultModal title={'회원정보'} content={result} callbackFn={closeModal}></ResultModal> : null}
             {error ? <div className="text-red-500">{error}</div> : null}
 
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="p-6 text-right font-bold w-32">Email</div>
-                    <input className="p-6 rounded-r border border-solid border-neutral-300 shadow-md flex-grow"
-                        name="email" type={'text'} value={member.email} readOnly>
-                    </input>
+                    <input className="p-2 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
+                        name="email" type={'text'} value={member.email} readOnly />
                 </div>
             </div>
 
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="p-6 text-right font-bold w-32">Password</div>
-                    <input className="p-6 rounded-r border border-solid border-neutral-300 shadow-md flex-grow"
-                        name="password" type={'password'} value={member.password} onChange={handleChange}>
-                    </input>
+                    <input className="p-2 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
+                        name="password" type={'password'} value={member.password} onChange={handleChange} />
                 </div>
             </div>
 
             <div className="flex justify-center">
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                     <div className="p-6 text-right font-bold w-32">Nickname</div>
-                    <input className="p-6 rounded-r border border-solid border-neutral-300 shadow-md flex-grow"
-                        name="nickname" type={'text'} value={member.nickname} onChange={handleChange}>
-                    </input>
+                    <input className="p-2 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
+                        name="nickname" type={'text'} value={member.nickname} onChange={handleChange} />
+                </div>
+            </div>
+
+            <div className="flex justify-center">
+                <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                    <div className="p-6 text-right font-bold w-32">Profile Image</div>
+                    <input className="p-2 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
+                        name="profileImage" type={'text'} value={member.profileImage} onChange={handleChange} />
                 </div>
             </div>
 
@@ -106,7 +113,6 @@ const ModifyComponent = () => {
                     </button>
                 </div>
             </div>
-
         </div>
     );
 }
