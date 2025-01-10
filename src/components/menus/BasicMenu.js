@@ -55,6 +55,9 @@ const BasicMenu = ({ children }) => {
                         </div>
                     ) : (
                         <div className="flex">
+                            <Link to={'/member/mypage'} className="mr-2 text-black px-4 py-2 rounded-lg hover:bg-gray-300 w-25 h-8 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm">
+                                마이페이지
+                            </Link>
                             <Link to={'/member/modify'} className="mr-2 text-black px-4 py-2 rounded-lg hover:bg-gray-300 w-24 h-8 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm">
                                 회원정보
                             </Link>

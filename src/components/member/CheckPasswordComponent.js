@@ -36,6 +36,7 @@ const CheckPasswordComponent = () => {
             if (result) {
                 dispatch(updateLoginInfo({ ...loginInfo, password: member.password }));
                 setResult('Redirecting to modify page...');
+                setIsAuthenticated(true); 
             }
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
