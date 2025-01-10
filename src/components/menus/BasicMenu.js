@@ -22,6 +22,7 @@ const BasicMenu = ({ children }) => {
         <div>
             <nav id='navbar' className="fixed w-full top-0 left-0 z-50 bg-white shadow">
                 <div className="container mx-auto px-4 py-2 flex justify-between items-center">
+<<<<<<< Updated upstream
                     <nav className="space-x-1">
                         <button
                             className="bg-logo-image bg-cover w-12 h-12 font-bold text-blue-500"
@@ -52,6 +53,49 @@ const BasicMenu = ({ children }) => {
                             </>
                         )}
                     </nav>
+=======
+                    <button
+                        className="bg-logo-image bg-cover w-32 h-10 cursor-pointer"
+                        onClick={handleClickLogo}
+                    >
+                    </button>
+                    <div className="flex space-x-6">
+                        <Link to={'/board/lost'} className="text-gray-700 hover:text-black text-sm">
+                            분실물 게시판
+                        </Link>
+                        <Link to={'/board/found'} className="text-gray-700 hover:text-black text-sm">
+                            습득물 게시판
+                        </Link>
+                        <Link to={'/board/free'} className="text-gray-700 hover:text-black text-sm">
+                            자유게시판
+                        </Link>
+                    </div>
+                    {!loginState.email ? (
+                        <div className="flex">
+                            <button
+                                className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 w-24 h-8 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm"
+                                onClick={openModal}>
+                                Login
+                            </button>
+                            <LoginModal isOpen={isModalOpen} onClose={closeModal}/>
+                        </div>
+                    ) : (
+                        <div className="flex">
+                            <Link to={'/member/mypage'} className="mr-2 text-black px-4 py-2 rounded-lg hover:bg-gray-300 w-25 h-8 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm">
+                                마이페이지
+                            </Link>                            
+                            <Link to={'/member/modify'} className="mr-2 text-black px-4 py-2 rounded-lg hover:bg-gray-300 w-24 h-8 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm">
+                                회원정보
+                            </Link>
+                            <button
+                                className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 w-24 h-8 flex items-center justify-center shadow-md hover:shadow-lg transition-shadow text-sm"
+                                onClick={handleLogout}
+                            >
+                                로그아웃
+                            </button>
+                        </div>
+                    )}
+>>>>>>> Stashed changes
                 </div>
             </nav>
             {children}
