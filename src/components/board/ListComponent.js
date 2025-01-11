@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageComponent from "../common/PageComponent";
-import {getBoardList} from "../../api/boardApi";
+
 
 // 더미 데이터
 const dummyData = {

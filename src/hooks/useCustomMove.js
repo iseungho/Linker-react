@@ -14,7 +14,7 @@ const useCustomMove = () => {
     const [queryParams] = useSearchParams();
 
     const page = getNum(queryParams.get('page'), 1);
-    const size = getNum(queryParams.get('size'), 8);
+    const size = getNum(queryParams.get('size'), 10);
 
     const queryDefault = createSearchParams({
         page: page.toString(),
@@ -24,7 +24,7 @@ const useCustomMove = () => {
     // 중복된 쿼리 문자열 생성 로직을 함수로 추출
     const createQueryString = (pageParam) => {
         const pageNum = getNum(pageParam?.page, 1);
-        const sizeNum = getNum(pageParam?.size, 8);
+        const sizeNum = getNum(pageParam?.size, 10);
         return createSearchParams({
             page: pageNum.toString(),
             size: sizeNum.toString(),
@@ -35,11 +35,25 @@ const useCustomMove = () => {
         navigate({ pathname: `/` });
     }
 
-    const moveToBoardList = (pageParam) => {
+    const moveToFoundPostList = (pageParam) => {
+        const queryStr = pageParam ? createQueryString(pageParam) : queryDefault;
+        console.log("queryStr:", queryStr);
+        setRefresh(!refresh);
+        navigate({ pathname: `/board/found`, search: queryStr });
+    }
+
+    const moveToLostPostList = (pageParam) => {
         const queryStr = pageParam ? createQueryString(pageParam) : queryDefault;
 
         setRefresh(!refresh);
-        navigate({ pathname: `/board/list`, search: queryStr });
+        navigate({ pathname: `/board/lost`, search: queryStr });
+    }
+
+    const moveToFreePostList = (pageParam) => {
+        const queryStr = pageParam ? createQueryString(pageParam) : queryDefault;
+
+        setRefresh(!refresh);
+        navigate({ pathname: `/board/free`, search: queryStr });
     }
 
     const moveToMyPage = (mno, pageParam) => {
@@ -49,7 +63,7 @@ const useCustomMove = () => {
         navigate({ pathname: `/member/mypage/${mno}`, search: queryStr });
     }
 
-    return { moveToMain, moveToBoardList, moveToMyPage, setRefresh, page, size, refresh };
+    return { moveToMain, moveToFoundPostList, moveToLostPostList, moveToFreePostList, moveToMyPage, setRefresh, page, size, refresh };
 }
 
 export default useCustomMove;

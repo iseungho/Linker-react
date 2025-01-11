@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PageComponent from "../common/PageComponent";
 import { getAllFoundBoard } from "../../api/boardApi";
+import useCustomMove from "../../hooks/useCustomMove";
 
 const initListState = {
     dtoList: [],
@@ -16,21 +17,16 @@ const initListState = {
 };
 
 const FoundComponent = () => {
-
+    const { page, size, moveToFoundPostList, refresh } = useCustomMove();
     const [serverData, setServerData] = useState(initListState);
     const [fetching, setFetching] = useState(false);
-    const [page, setPage] = useState(1);
-    const [size, setSize] = useState(10);
 
     useEffect(() => {
         const fetchBoardList = async () => {
             setFetching(true);
             try {
-                const postData = await getAllFoundBoard();
-                setServerData((prev) => ({
-                    ...serverData,
-                    dtoList: postData,
-                }))
+                const data = await getAllFoundBoard({ page, size });
+                setServerData(data);
             } catch (error) {
                 console.error("Error fetching board list:", error);
             } finally {
@@ -38,10 +34,10 @@ const FoundComponent = () => {
             }
         };
         fetchBoardList();
-    }, [page, size]);
+    }, [page, size, refresh]);
 
-    const moveToPage = (newPage) => {
-        setPage(newPage);
+    const handleMovePage = (pageNum) => {
+        moveToFoundPostList({ page: pageNum, size });
     };
 
     return (
@@ -52,17 +48,14 @@ const FoundComponent = () => {
                 </div>
                 {fetching && <p>Loading...</p>}
 
-                { serverData.dtoList.map((board) => (
-                    <div key={board.bno} className="board-item border-b border-gray-300 py-4">
-                        <h3 className="board-title text-xl font-semibold">{board.title}</h3>
-                        <p className="board-content text-sm text-gray-600">{board.content}</p>
+                {serverData.dtoList.map((post) => (
+                    <div key={post.pno} className="board-item border-b border-gray-300 py-4">
+                        <h3 className="board-title text-xl font-semibold">{post.title}[{post.commentCount}]</h3>
+                        <p className="board-content text-sm text-gray-600">{post.content}</p>
                     </div>
                 ))}
 
-                <PageComponent
-                    serverData={serverData}
-                    movePage={moveToPage}
-                />
+                <PageComponent serverData={serverData} movePage={handleMovePage} />
             </div>
         </div>
     );

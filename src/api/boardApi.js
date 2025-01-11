@@ -2,6 +2,8 @@ import jwtAxios from "../util/jwtUtil";
 import { API_SERVER_HOST } from "./memberApi";
 
 const foundPath = `${API_SERVER_HOST}/api/found`
+const lostPath = `${API_SERVER_HOST}/api/lost`
+const freePath = `${API_SERVER_HOST}/api/free`
 
 export const postFoundBoard = async (boardData) => {
     const formData = new FormData();
@@ -17,9 +19,31 @@ export const postFoundBoard = async (boardData) => {
     }
 }
 
-export const getAllFoundBoard = async () => {
+export const getAllFoundBoard = async (pageParam) => {
+    const { page, size } = pageParam;
+
     try {
-        const response = await jwtAxios.get(`${foundPath}/`);
+        const response = await jwtAxios.get(`${foundPath}/`, { params: { page, size } });
+        console.log(response.data)
+        return response.data;
+    } catch (error) {
+        alert(error);
+    }
+}
+
+export const getAllLostBoard = async () => {
+    try {
+        const response = await jwtAxios.get(`${lostPath}/`);
+        console.log(response.data)
+        return response.data;
+    } catch (error) {
+        alert(error);
+    }
+}
+
+export const getAllFreeBoard = async () => {
+    try {
+        const response = await jwtAxios.get(`${freePath}/`);
         console.log(response.data)
         return response.data;
     } catch (error) {
