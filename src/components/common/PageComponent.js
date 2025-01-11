@@ -2,7 +2,7 @@ import React from "react";
 
 const PageComponent = ({ serverData, movePage }) => {
     return (
-        <div className="flex justify-center items-center space-x-2 mt-4">
+        <div className="flex justify-center items-center space-x-2 mt-4 mb-4">
             {/* Prev 버튼 */}
             {serverData.prev && (
                 <button

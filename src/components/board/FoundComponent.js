@@ -57,8 +57,14 @@ const FoundComponent = () => {
                         <p className="board-content text-sm text-gray-600">{post.content}</p>
                     </div>
                 ))}
-
-                <PageComponent serverData={serverData} movePage={handleMovePage} />
+                <div className="flex justify-end">
+                    <Link to={'/board/found/write'}
+                          className="px-4 py-2 rounded-lg bg-green-500 m-4 text-white hover:bg-green-400 transition duration-300"
+                    >
+                        글쓰기
+                    </Link>
+                </div>
+                <PageComponent serverData={serverData} movePage={handleMovePage}/>
             </div>
         </div>
     );

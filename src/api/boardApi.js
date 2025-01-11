@@ -5,19 +5,6 @@ const foundPath = `${API_SERVER_HOST}/api/found`
 const lostPath = `${API_SERVER_HOST}/api/lost`
 const freePath = `${API_SERVER_HOST}/api/free`
 
-export const postFoundBoard = async (boardData) => {
-    const formData = new FormData();
-    formData.append('title', boardData.title);
-    formData.append('content', boardData.content);
-    formData.append('ino', boardData.ino);
-
-    try {
-        const response = jwtAxios.post();
-        return response;
-    } catch (error) {
-        
-    }
-}
 
 export const getAllFoundBoard = async (pageParam) => {
     const { page, size } = pageParam;
@@ -61,6 +48,26 @@ export const getFoundBoardById = async (param) => {
         alert(error);
     }
 }
+
+export const postFoundBoard = async (boardData) => {
+    try {
+        const response = await jwtAxios.post(`${foundPath}/`, {
+            title: boardData.title,
+            content: boardData.content,
+            mno: boardData.mno,
+            categoryId: boardData.categoryId,
+            regionId: boardData.regionId,
+            location: boardData.location,
+            photoUrl: boardData.photoUrl,
+            postType: "FOUND",
+        });
+        console.log("글 작성 성공:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("글 작성 실패:", error);
+        throw error;
+    }
+};
 
 export const deleteFoundBoard = async (pno) => {
     try {

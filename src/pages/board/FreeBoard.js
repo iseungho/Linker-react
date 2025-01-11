@@ -2,7 +2,7 @@ import React from 'react';
 import BasicLayout from '../../layouts/BasicLayout';
 import FreeComponent from '../../components/board/FreeComponent';
 
-const ListPage = () => {
+const FreeBoard = () => {
     return (
         <BasicLayout>
             <FreeComponent/>
@@ -10,4 +10,4 @@ const ListPage = () => {
     );
 }
 
-export default ListPage;
+export default FreeBoard;

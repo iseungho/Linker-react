@@ -2,7 +2,7 @@ import React from 'react';
 import BasicLayout from '../../layouts/BasicLayout';
 import FoundComponent from '../../components/board/FoundComponent';
 
-const ListPage = () => {
+const FoundBoard = () => {
     return (
         <BasicLayout>
             <FoundComponent/>
@@ -10,4 +10,4 @@ const ListPage = () => {
     );
 }
 
-export default ListPage;
+export default FoundBoard;

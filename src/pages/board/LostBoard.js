@@ -2,7 +2,7 @@ import React from 'react';
 import BasicLayout from '../../layouts/BasicLayout';
 import LostComponent from '../../components/board/LostComponent';
 
-const ListPage = () => {
+const LostBoard = () => {
     return (
         <BasicLayout>
             <LostComponent/>
@@ -10,4 +10,4 @@ const ListPage = () => {
     );
 }
 
-export default ListPage;
+export default LostBoard;
