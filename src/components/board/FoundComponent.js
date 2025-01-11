@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageComponent from "../common/PageComponent";
-import { getAllBoard } from "../../api/boardApi";
+import { getAllFoundBoard } from "../../api/boardApi";
 
 const initListState = {
     dtoList: [],
@@ -26,7 +26,7 @@ const FoundComponent = () => {
         const fetchBoardList = async () => {
             setFetching(true);
             try {
-                const postData = await getAllBoard();
+                const postData = await getAllFoundBoard();
                 setServerData((prev) => ({
                     ...serverData,
                     dtoList: postData,
