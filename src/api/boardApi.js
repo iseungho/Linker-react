@@ -1,13 +1,21 @@
-import axios from "axios"
+import jwtAxios from "../util/jwtUtil";
+import { API_SERVER_HOST } from "./memberApi";
 
-export const API_SERVER_HOST = 'http://localhost:8080'
+const foundPath = `${API_SERVER_HOST}/api/found`
 
-const host = `${API_SERVER_HOST}/api/found`
+const deletePath = `${API_SERVER_HOST}/api/found`
 
-export const getAllPost = async () => {
+
+export const getAllBoard = async () => {
     try {
-        const response = axios.get(`{}`)
+        const response = await jwtAxios.get(`${foundPath}/`);
+        console.log(response.data)
+        return response.data;
     } catch (error) {
-        
+        alert(error);
     }
+}
+
+export const deleteDoard = (pno) => {
+
 }
