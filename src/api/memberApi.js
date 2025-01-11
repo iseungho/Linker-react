@@ -12,7 +12,7 @@ export const loginPost = async (loginParam) => {
         }
     }
 
-    const form = new FormData()
+    const form = new FormData()   
     form.append('username', loginParam.email)
     form.append('password', loginParam.password)
 
