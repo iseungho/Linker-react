@@ -51,7 +51,8 @@ export const getAllFreeBoard = async () => {
     }
 }
 
-export const getFoundBoardById = async (pno) => {
+export const getFoundBoardById = async (param) => {
+    const {pno} = param
     try {
         const response = await jwtAxios.get(`${foundPath}/${pno}`);
         console.log(response.data)

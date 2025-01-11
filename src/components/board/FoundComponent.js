@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PageComponent from "../common/PageComponent";
 import { getAllFoundBoard } from "../../api/boardApi";
 import useCustomMove from "../../hooks/useCustomMove";
+import { Link } from "react-router-dom";
 
 const initListState = {
     dtoList: [],
@@ -50,7 +51,9 @@ const FoundComponent = () => {
 
                 {serverData.dtoList.map((post) => (
                     <div key={post.pno} className="board-item border-b border-gray-300 py-4">
-                        <h3 className="board-title text-xl font-semibold">{post.title}[{post.commentCount}]</h3>
+                        <Link to={''}>
+                            <h3 className="board-title text-xl font-semibold">{post.title}[{post.commentCount}]</h3>
+                        </Link>
                         <p className="board-content text-sm text-gray-600">{post.content}</p>
                     </div>
                 ))}
