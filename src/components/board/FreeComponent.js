@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PageComponent from "../common/PageComponent";
 import { getAllFreeBoard } from "../../api/boardApi";
 import useCustomMove from "../../hooks/useCustomMove";
+import {Link} from "react-router-dom";
 
 const initListState = {
     dtoList: [],
@@ -50,12 +51,18 @@ const FreeComponent = () => {
 
                 {serverData.dtoList.map((post) => (
                     <div key={post.pno} className="board-item border-b border-gray-300 py-4">
-                        <h3 className="board-title text-xl font-semibold">{post.title}[{post.commentCount}]</h3>
+                        <h3 className="board-title text-xl font-semibold">{post.title}{post.commentCount > 0 && `[${post.commentCount}]`}</h3>
                         <p className="board-content text-sm text-gray-600">{post.content}</p>
                     </div>
                 ))}
-
-                <PageComponent serverData={serverData} movePage={handleMovePage} />
+                <div className="flex justify-end">
+                    <Link to={'/board/free/write'}
+                          className="px-4 py-2 rounded-lg bg-green-500 m-4 text-white hover:bg-green-400 transition duration-300"
+                    >
+                        글쓰기
+                    </Link>
+                </div>
+                <PageComponent serverData={serverData} movePage={handleMovePage}/>
             </div>
         </div>
     );

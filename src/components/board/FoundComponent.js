@@ -52,7 +52,7 @@ const FoundComponent = () => {
                 {serverData.dtoList.map((post) => (
                     <div key={post.pno} className="board-item border-b border-gray-300 py-4">
                         <Link to={''}>
-                            <h3 className="board-title text-xl font-semibold">{post.title}[{post.commentCount}]</h3>
+                            <h3 className="board-title text-xl font-semibold">{post.title}{post.commentCount > 0 && `[${post.commentCount}]`}</h3>
                         </Link>
                         <p className="board-content text-sm text-gray-600">{post.content}</p>
                     </div>

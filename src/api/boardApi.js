@@ -69,6 +69,46 @@ export const postFoundBoard = async (boardData) => {
     }
 };
 
+export const postFreeBoard = async (boardData) => {
+    try {
+        const response = await jwtAxios.post(`${freePath}/`, {
+            title: boardData.title,
+            content: boardData.content,
+            mno: boardData.mno,
+            categoryId: boardData.categoryId,
+            regionId: boardData.regionId,
+            location: boardData.location,
+            photoUrl: boardData.photoUrl,
+            postType: "FREE",
+        });
+        console.log("글 작성 성공:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("글 작성 실패:", error);
+        throw error;
+    }
+};
+
+export const postLostBoard = async (boardData) => {
+    try {
+        const response = await jwtAxios.post(`${lostPath}/`, {
+            title: boardData.title,
+            content: boardData.content,
+            mno: boardData.mno,
+            categoryId: boardData.categoryId,
+            regionId: boardData.regionId,
+            location: boardData.location,
+            photoUrl: boardData.photoUrl,
+            postType: "LOST",
+        });
+        console.log("글 작성 성공:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("글 작성 실패:", error);
+        throw error;
+    }
+};
+
 export const deleteFoundBoard = async (pno) => {
     try {
         const response = await jwtAxios.delete(`${foundPath}/${pno}`);
