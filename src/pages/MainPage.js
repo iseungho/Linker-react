@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import BasicLayout from "../layouts/BasicLayout";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useCustomLogin from "../hooks/useCustomLogin"; // 로그인 상태를 확인하는 훅
 
 function MainPage(props) {

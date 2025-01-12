@@ -18,9 +18,11 @@ export const getAllFoundBoard = async (pageParam) => {
     }
 }
 
-export const getAllLostBoard = async () => {
+export const getAllLostBoard = async (pageParam) => {
+    const { page, size } = pageParam;
+
     try {
-        const response = await jwtAxios.get(`${lostPath}/`);
+        const response = await jwtAxios.get(`${lostPath}/`, { params: { page, size } });
         console.log(response.data)
         return response.data;
     } catch (error) {
@@ -28,9 +30,11 @@ export const getAllLostBoard = async () => {
     }
 }
 
-export const getAllFreeBoard = async () => {
+export const getAllFreeBoard = async (pageParam) => {
+    const { page, size } = pageParam;
+
     try {
-        const response = await jwtAxios.get(`${freePath}/`);
+        const response = await jwtAxios.get(`${freePath}/`, { params: { page, size } });
         console.log(response.data)
         return response.data;
     } catch (error) {
