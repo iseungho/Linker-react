@@ -4,12 +4,10 @@ import { useParams } from 'react-router-dom';
 import EachPostComponent from '../../components/eachPost/EachPostComponent';
 
 const EachPost = () => {
-
     const { pno } = useParams();
     return (
         <BasicLayout>
-            <EachPostComponent pno={pno} /> 
-            <EachPostComponent/> 
+            <EachPostComponent pno={pno} />
         </BasicLayout>
     );
 };

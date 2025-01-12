@@ -43,6 +43,17 @@ export const getAllFreeBoard = async (pageParam) => {
 }
 
 export const getFoundBoardById = async (param) => {
+    const {pno} = param
+    try {
+        const response = await jwtAxios.get(`${foundPath}/${pno}`);
+        console.log(response.data)
+        return response.data;
+    } catch (error) {
+        alert(error);
+    }
+}
+
+export const getFoundBoardByPno = async (param) => {
     try {
         const response = await jwtAxios.get(`${foundPath}/${param}`);
         console.log(response.data)

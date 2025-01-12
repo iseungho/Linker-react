@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PageComponent from "../../common/PageComponent";
-import {deleteFreeBoard, getAllFreeBoard} from "../../../api/boardApi";
+import { deleteFreeBoard, getAllFreeBoard } from "../../../api/boardApi";
 import useCustomMove from "../../../hooks/useCustomMove";
 import useCustomLogin from "../../../hooks/useCustomLogin";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const initListState = {
     dtoList: [],
@@ -59,68 +59,72 @@ const FreeComponent = () => {
         }
     };
 
-
     return (
-        <div className="board-list-container flex justify-center mt-24">
-            <div className="board-list-wrapper w-2/3 sm:w-2/3 md:w-2/3 lg:w-3/5">
-                <div className="board-list-header flex justify-between items-center">
-                    <h2 className="board-list-title text-2xl font-semibold">자유 게시판</h2>
+        <div className="board-list-container flex justify-center mt-24 mb-4 px-4">
+            <div className="board-list-wrapper w-full sm:w-2/3 md:w-2/3 lg:w-3/5 xl:w-2/3 bg-white shadow-lg rounded-lg">
+                <div className="board-list-header flex justify-between items-center p-6 bg-gray-100 rounded-t-lg">
+                    <h2 className="board-list-title text-2xl font-semibold text-gray-800">자유 게시판</h2>
                 </div>
-                {fetching && <p>Loading...</p>}
+                {fetching && <p className="text-center py-6">Loading...</p>}
 
-                {serverData.dtoList.map((post) => (
-                    <div key={post.pno} className="board-item border-b border-gray-300 py-4">
-                        <div className="flex justify-between items-center">
-                            <Link to={`/board/free/${post.pno}`}>
-                                console.log(post);
-                                <h3 className="board-title text-xl font-semibold">
-                                    {post.title}
-                                    {post.commentCount > 0 && ` [${post.commentCount}]`}
-                                </h3>
-                            </Link>
-                            <div className="flex">
-                                <div className="text-sm text-gray-500 mr-2">
-                                    {post.updated && post.updated !== post.created
-                                        ? new Date(post.updated).toLocaleString() // 수정된 시간 표시
-                                        : new Date(post.created).toLocaleString() // 작성된 시간 표시
-                                    }
-                                    {post.updated && post.updated !== post.created && (
-                                        <span className="text-gray-600">(수정됨)</span>
+                {serverData.dtoList.length === 0 ? (
+                    <p className="text-center py-6 text-gray-500">게시글이 없습니다.</p>
+                ) : (
+                    serverData.dtoList.map((post) => (
+                        <div key={post.pno} className="board-item p-6 border-b border-gray-200">
+                            <div className="flex justify-between items-start">
+                                <Link to={`/board/free/${post.pno}`} className="flex-1">
+                                    <h3 className="board-title text-xl font-semibold text-gray-900">
+                                        {post.title}
+                                        {post.commentCount > 0 && ` [${post.commentCount}]`}
+                                    </h3>
+                                </Link>
+                                <div className="flex items-center space-x-4">
+                                    <div className="text-sm text-gray-500">
+                                        {post.updated && post.updated !== post.created
+                                            ? new Date(post.updated).toLocaleString() // 수정된 시간 표시
+                                            : new Date(post.created).toLocaleString() // 작성된 시간 표시
+                                        }
+                                        {post.updated && post.updated !== post.created && (
+                                            <span className="text-gray-600">(수정됨)</span>
+                                        )}
+                                    </div>
+
+                                    {/* 로그인한 사용자와 게시글 작성자가 같으면 수정/삭제 버튼 표시 */}
+                                    {loginState.mno === post.mno && (
+                                        <div className="flex space-x-3">
+                                            <Link
+                                                to={`/board/modify/${post.pno}`}
+                                                className="text-gray-600 hover:text-blue-500 text-sm"
+                                            >
+                                                수정
+                                            </Link>
+                                            <button
+                                                onClick={() => handleDelete(post.pno)}
+                                                className="text-red-600 hover:text-red-500 text-sm"
+                                            >
+                                                삭제
+                                            </button>
+                                        </div>
                                     )}
                                 </div>
-
-                                {/* 로그인한 사용자와 게시글 작성자가 같으면 수정/삭제 버튼 표시 */}
-                                {loginState.mno === post.mno && (
-                                    <div className="flex space-x-2">
-
-                                        <Link
-                                            to={`/board/found/modify/${post.pno}`}
-                                            className="text-gray-600 hover:underline text-sm"
-                                        >
-                                            수정
-                                        </Link>
-                                        <button
-                                            onClick={() => handleDelete(post.pno)}
-                                            className="text-red-600 hover:underline text-sm"
-                                        >
-                                            삭제
-                                        </button>
-                                    </div>
-                                )}
                             </div>
-                        </div>
 
-                        <p className="board-content text-sm text-gray-600">{post.content}</p>
-                    </div>
-                ))}
-                <div className="flex justify-end">
-                    <Link to={'/board/free/write'}
-                          className="px-4 py-2 rounded-lg bg-green-500 m-4 text-white hover:bg-green-400 transition duration-300"
+                            <p className="board-content text-sm text-gray-600 mt-2">{post.content}</p>
+                        </div>
+                    ))
+                )}
+
+                <div className="flex justify-between items-center py-4 px-6 bg-gray-100 rounded-b-lg">
+                    <Link
+                        to="/board/free/write"
+                        className="px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-400 transition duration-300"
                     >
                         글쓰기
                     </Link>
+
+                    <PageComponent serverData={serverData} movePage={handleMovePage} />
                 </div>
-                <PageComponent serverData={serverData} movePage={handleMovePage}/>
             </div>
         </div>
     );
