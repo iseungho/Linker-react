@@ -93,3 +93,8 @@ export const getProfileImage = async (mno) => {
     const res = await axios.get(`${API_SERVER_HOST}/api/profiles/image/${mno}`);
     return res.data;
 }
+
+export const getMember = async (mno) => {
+    const res = await axios.get(`${host}/${mno}`);
+    return res.data;
+}

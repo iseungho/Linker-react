@@ -84,7 +84,7 @@ function MainPage(props) {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         <button onClick={() => handleBoardClick("LOST")} className="block">
                             <div
-                                className="bg-green-500 text-white font-semibold rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-xl w-64 h-64 flex flex-col justify-center items-center"
+                                className="bg-green-400 text-white font-semibold rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-xl w-64 h-64 flex flex-col justify-center items-center"
                             >
                                 <h3 className="text-xl">분실물 게시글 조회</h3>
                                 <p className="m-2 text-sm text-gray-100">오늘 올라온 분실물 게시글을 확인하세요.</p>
@@ -92,7 +92,7 @@ function MainPage(props) {
                         </button>
                         <button onClick={() => handleBoardClick("FOUND")} className="block">
                             <div
-                                className="bg-indigo-500 text-white font-semibold rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-xl w-64 h-64 flex flex-col justify-center items-center"
+                                className="bg-indigo-400 text-white font-semibold rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-xl w-64 h-64 flex flex-col justify-center items-center"
                             >
                                 <h3 className="text-xl">습득물 게시글 조회</h3>
                                 <p className="m-2 text-sm text-gray-100">오늘 올라온 습득물 게시글을 확인하세요.</p>
@@ -100,7 +100,7 @@ function MainPage(props) {
                         </button>
                         <button onClick={() => handleBoardClick("FREE")} className="block">
                             <div
-                                className="bg-purple-500 text-white font-semibold rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-xl w-64 h-64 flex flex-col justify-center items-center"
+                                className="bg-purple-400 text-white font-semibold rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-xl w-64 h-64 flex flex-col justify-center items-center"
                             >
                                 <h3 className="text-xl">자유 게시글 조회</h3>
                                 <p className="m-2 text-sm text-gray-100">자유 게시글을 확인하고 참여하세요.</p>

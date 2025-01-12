@@ -129,7 +129,7 @@ const ModifyComponent = () => {
 
                 <div className="flex justify-center">
                     <div className="relative mb-4 flex w-full flex-wrap flex-col items-stretch">
-                        <div className="pl-0 text-left font-bold w-32">비밀번호</div>
+                        <div className="pl-0 text-left font-bold w-32 ">비밀번호</div>
                         <input className="p-0 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
                             name="password" type={'password'} value={member.password} onChange={handleChange} />
                     </div>
