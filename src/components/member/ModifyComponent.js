@@ -21,25 +21,17 @@ const ModifyComponent = () => {
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const [Image, setImage] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
-    const fileInput = useRef(null)
-    const [file, setFile] = useState(null); // 추가
-    
+    const fileInput = useRef(null);
+
+
     const onChange = (e) => {
-        if(e.target.files[0]){
-                setFile(e.target.files[0])
-            }else{ //업로드 취소할 시
-                setImage("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
-                return
-            }
-        //화면에 프로필 사진 표시
-            const reader = new FileReader();
-            reader.onload = () => {
-                if(reader.readyState === 2){
-                    setImage(reader.result)
-                }
-            }
-            reader.readAsDataURL(e.target.files[0])
+        if (e.target.files[0]) {
+            setImage(e.target.files[0]);
+        } else {
+            setImage("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+            return;
         }
+    };
 
     useEffect(() => {
         setMember({ 
@@ -104,7 +96,7 @@ const ModifyComponent = () => {
         <div className="w-1/2 p-4">    
             <div className="flex justify-center items-center w-full h-full mb-4">
                 <div className="relative flex justify-center flex-wrap">
-                    <img src={Image} style={{margin: "20px",borderRadius: "50%", width: "200px", height: "200px" }} onClick={()=>{fileInput.current.click()}}/>
+                    <img src={Image} style={{margin: "20px",borderRadius: "50%", width: "200px", height: "200px" }} onClick={()=>{fileInput.current.click()}} alt={''}/>
                     <input name="profileImage" style={{display:"none"}} accept='image/jpg,impge/png,image/jpeg' type='file' onChange={onChange} ref={fileInput}/>
                     <div className="p-6 pt-0 text-center font-bold w-full">프로필 이미지 수정</div>
                     </div>

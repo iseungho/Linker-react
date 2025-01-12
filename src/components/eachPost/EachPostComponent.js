@@ -90,9 +90,7 @@ const EachPostComponent = () => {
                 mno: loginState.mno, // 예시로 작성자 ID (로그인한 사용자 ID)
                 postId: postData.pno, // 해당 게시글 ID
             };
-
-            const response = await postComment(commentData); // 댓글 등록 API 호출
-            console.log("댓글 등록 성공:", response);
+            await postComment(commentData);
             setCommentContent(""); // 댓글 내용 초기화
 
             // 댓글 등록 후 다시 댓글 목록을 가져오기
@@ -123,10 +121,7 @@ const EachPostComponent = () => {
                 cno: commentId,
                 content: editContent,
             };
-            const updatedComment = await modifyComment(updatedCommentData);
-            console.log("댓글 수정 성공:", updatedComment);
-
-            // 수정 후 댓글 목록을 다시 가져와서 업데이트
+            await modifyComment(updatedCommentData);
             const updatedComments = await getCommentsByPostId(postData.pno);
             const commentsWithAuthorNames = await Promise.all(
                 updatedComments.map(async (comment) => {
@@ -145,7 +140,6 @@ const EachPostComponent = () => {
     const handleCommentDelete = async (commentId) => {
         try {
             await deleteComment(commentId);
-            console.log("댓글 삭제 성공");
 
             // 삭제 후 댓글 목록을 다시 가져와서 업데이트
             const updatedComments = await getCommentsByPostId(postData.pno);
