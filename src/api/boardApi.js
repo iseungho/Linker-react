@@ -1,5 +1,5 @@
 import jwtAxios from "../util/jwtUtil";
-import { API_SERVER_HOST } from "./memberApi";
+import {API_SERVER_HOST} from "./memberApi";
 
 const foundPath = `${API_SERVER_HOST}/api/found`
 const lostPath = `${API_SERVER_HOST}/api/lost`
@@ -43,9 +43,8 @@ export const getAllFreeBoard = async (pageParam) => {
 }
 
 export const getFoundBoardById = async (param) => {
-    const {pno} = param
     try {
-        const response = await jwtAxios.get(`${foundPath}/${pno}`);
+        const response = await jwtAxios.get(`${foundPath}/${param}`);
         console.log(response.data)
         return response.data;
     } catch (error) {
@@ -207,7 +206,8 @@ export const deleteFreeBoard = async (pno) => {
     } catch (error) {
         throw new Error('게시글 삭제에 실패했습니다.');
     }
-};export const deleteLostBoard = async (pno) => {
+};
+export const deleteLostBoard = async (pno) => {
     try {
         const response = await jwtAxios.delete(`${lostPath}/${pno}`);
         return response.data;

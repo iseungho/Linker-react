@@ -72,6 +72,7 @@ const FreeComponent = () => {
                     <div key={post.pno} className="board-item border-b border-gray-300 py-4">
                         <div className="flex justify-between items-center">
                             <Link to={`/board/free/${post.pno}`}>
+                                console.log(post);
                                 <h3 className="board-title text-xl font-semibold">
                                     {post.title}
                                     {post.commentCount > 0 && ` [${post.commentCount}]`}
