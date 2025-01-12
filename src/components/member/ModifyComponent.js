@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { modifyMember, removeMember } from "../../api/memberApi";
 import useCustomLogin from "../../hooks/useCustomLogin";
@@ -20,6 +20,26 @@ const ModifyComponent = () => {
     const [result, setResult] = useState();
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
+    const [Image, setImage] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
+    const fileInput = useRef(null)
+    const [file, setFile] = useState(null); // 추가
+    
+    const onChange = (e) => {
+        if(e.target.files[0]){
+                setFile(e.target.files[0])
+            }else{ //업로드 취소할 시
+                setImage("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
+                return
+            }
+        //화면에 프로필 사진 표시
+            const reader = new FileReader();
+            reader.onload = () => {
+                if(reader.readyState === 2){
+                    setImage(reader.result)
+                }
+            }
+            reader.readAsDataURL(e.target.files[0])
+        }
 
     useEffect(() => {
         setMember({ 
@@ -82,42 +102,42 @@ const ModifyComponent = () => {
 
         <div className="flex">
         <div className="w-1/2 p-4">    
-            <div className="flex justify-center items-center h-full mb-4">
-                <div className="relative mb-4 flex w-full flex-wrap items-center">
-                    <input className="p-2 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
-                        name="profileImage" type={'file'} value={member.profileImage} onChange={handleChange} />
-                    <div className="p-6 text-center font-bold w-full">프로필 이미지 수정</div>
+            <div className="flex justify-center items-center w-full h-full mb-4">
+                <div className="relative flex justify-center flex-wrap">
+                    <img src={Image} style={{margin: "20px",borderRadius: "50%", width: "200px", height: "200px" }} onClick={()=>{fileInput.current.click()}}/>
+                    <input name="profileImage" style={{display:"none"}} accept='image/jpg,impge/png,image/jpeg' type='file' onChange={onChange} ref={fileInput}/>
+                    <div className="p-6 pt-0 text-center font-bold w-full">프로필 이미지 수정</div>
                     </div>
                 </div>
             </div>            
             <div className="w-1/2 p-4">
-                <div className="flex justify-center mb-4">
-                    <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                        <div className="p-6 text-right font-bold w-32">아이디</div>
-                        <input className="p-2 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
+                <div className="flex justify-center mb-">
+                    <div className="relative mb-4 flex w-full flex-col flex-wrap items-stretch">
+                        <div className="pl-0  text-left font-bold w-32">아이디</div>
+                        <input className="p-0 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
                             name="email" type={'text'} value={member.email} readOnly />
                     </div>
                 </div>
 
                 <div className="flex justify-center">
-                    <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                        <div className="p-6 text-right font-bold w-32">본인 이름</div>
-                        <input className="p-2 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
+                    <div className="relative mb-4 flex w-full flex-wrap flex-col items-stretch">
+                        <div className="pl-0 text-left font-bold w-32">본인 이름</div>
+                        <input className="p-0 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
                             name="nickname" type={'text'} value={member.nickname} onChange={handleChange} />
                     </div>
                 </div>
 
                 <div className="flex justify-center">
-                    <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                        <div className="p-6 text-right font-bold w-32">비밀번호</div>
-                        <input className="p-2 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
+                    <div className="relative mb-4 flex w-full flex-wrap flex-col items-stretch">
+                        <div className="pl-0 text-left font-bold w-32">비밀번호</div>
+                        <input className="p-0 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
                             name="password" type={'password'} value={member.password} onChange={handleChange} />
                     </div>
                 </div>
                 <div className="flex justify-center">
-                    <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-                        <div className="p-6 text-right font-bold w-32">비밀번호 확인</div>
-                        <input className="p-2 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
+                    <div className="relative mb-4 flex w-full flex-wrap flex-col items-stretch">
+                        <div className="pl-0 text-left font-bold w-40">비밀번호 확인</div>
+                        <input className="p-0 border-b border-neutral-300 focus:outline-none focus:border-blue-500 flex-grow"
                             name="confirmPassword" type={'password'} value={confirmPassword} onChange={handleChange} />
                     </div>
                 </div>
