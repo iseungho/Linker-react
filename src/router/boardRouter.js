@@ -29,12 +29,24 @@ const boardRouter = () => {
         //     path: "found",
         //     element: <Suspense fallback={Loading}><EachPost/></Suspense>,
         // },
-        // {
-        //     path: "posting/:pno",
-        //     element: <Suspense fallback={Loading}>
-        //         <EachPost/>
-        //     </Suspense>,
-        // },
+        {
+            path: "found/:pno",
+            element: <Suspense fallback={Loading}>
+                <EachPost/>
+            </Suspense>,
+        },
+        {
+            path: "lost/:pno",
+            element: <Suspense fallback={Loading}>
+                <EachPost/>
+            </Suspense>,
+        },
+        {
+            path: "free/:pno",
+            element: <Suspense fallback={Loading}>
+                <EachPost/>
+            </Suspense>,
+        },
         {
             path: "free",
             element: <Suspense fallback={Loading}><FreeBoard /></Suspense>

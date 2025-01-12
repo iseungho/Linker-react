@@ -203,7 +203,8 @@ export const deleteFreeBoard = async (pno) => {
     } catch (error) {
         throw new Error('게시글 삭제에 실패했습니다.');
     }
-};export const deleteLostBoard = async (pno) => {
+};
+export const deleteLostBoard = async (pno) => {
     try {
         const response = await jwtAxios.delete(`${lostPath}/${pno}`);
         return response.data;

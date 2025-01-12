@@ -5,10 +5,10 @@ import EachPostComponent from '../../components/eachpost/EachPostComponent';
 
 const EachPost = () => {
 
-    // const { pno } = useParams();
+    const { pno } = useParams();
     return (
         <BasicLayout>
-            {/* <EachPostComponent pno={pno} />  */}
+            <EachPostComponent pno={pno} /> 
             <EachPostComponent/> 
         </BasicLayout>
     );
