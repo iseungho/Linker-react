@@ -76,24 +76,36 @@ const FoundComponent = () => {
                                     {post.commentCount > 0 && ` [${post.commentCount}]`}
                                 </h3>
                             </Link>
-
-                            {/* 로그인한 사용자와 게시글 작성자가 같으면 수정/삭제 버튼 표시 */}
-                            {loginState.mno === post.mno && (
-                                <div className="flex space-x-2">
-                                    <Link
-                                        to={`/board/found/modify/${post.pno}`}
-                                        className="text-gray-600 hover:underline text-sm"
-                                    >
-                                        수정
-                                    </Link>
-                                    <button
-                                        onClick={() => handleDelete(post.pno)}
-                                        className="text-red-600 hover:underline text-sm"
-                                    >
-                                        삭제
-                                    </button>
+                            <div className="flex">
+                                <div className="text-sm text-gray-500 mr-2">
+                                    {post.updated && post.updated !== post.created
+                                        ? new Date(post.updated).toLocaleString() // 수정된 시간 표시
+                                        : new Date(post.created).toLocaleString() // 작성된 시간 표시
+                                    }
+                                    {post.updated && post.updated !== post.created && (
+                                        <span className="text-gray-600">(수정됨)</span>
+                                    )}
                                 </div>
-                            )}
+
+                                {/* 로그인한 사용자와 게시글 작성자가 같으면 수정/삭제 버튼 표시 */}
+                                {loginState.mno === post.mno && (
+                                    <div className="flex space-x-2">
+
+                                        <Link
+                                            to={`/board/found/modify/${post.pno}`}
+                                            className="text-gray-600 hover:underline text-sm"
+                                        >
+                                            수정
+                                        </Link>
+                                        <button
+                                            onClick={() => handleDelete(post.pno)}
+                                            className="text-red-600 hover:underline text-sm"
+                                        >
+                                            삭제
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                         <p className="board-content text-sm text-gray-600">{post.content}</p>

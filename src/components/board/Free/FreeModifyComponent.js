@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getFreeBoardById, modifyFreeBoard} from "../../../api/boardApi";
+import { getFreeBoardById, modifyFreeBoard } from "../../../api/boardApi";
 import useCustomLogin from "../../../hooks/useCustomLogin";
 import {
     addMapClickListener,
@@ -132,7 +132,7 @@ const FreeModifyComponent = () => {
                 onSubmit={handleUpdate}
                 className="w-full md:w-3/5 bg-white shadow-md rounded px-8 pt-6 pb-8 mt-16 mb-4 flex flex-col"
             >
-                <h2 className="text-2xl font-bold mb-6 text-center">습득물 수정</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center">게시글 수정</h2>
 
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">제목</label>
