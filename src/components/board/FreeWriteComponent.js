@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { postFreeBoard } from "../../api/boardApi";
+import { postFreeBoard, uploadImage } from "../../api/boardApi"; // uploadImage를 추가하세요
 import { useNavigate } from "react-router-dom";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import { geocodeAddress, reverseGeocodeAddress, initializeMap, updateMapLocation, addMapClickListener } from "../../util/mapUtil";
@@ -10,6 +10,8 @@ const FreeWriteComponent = () => {
 
     const [selectedLocation, setSelectedLocation] = useState("경기도 성남시 분당구 판교로 227번길23 4&5층 SK쉴더스");
     const [searchAddress, setSearchAddress] = useState("");
+    const [imageFile, setImageFile] = useState(null);
+    const [imageUrl, setImageUrl] = useState("");
 
     const mapRef = useRef(null);
     const [map, setMap] = useState(null);
@@ -58,6 +60,10 @@ const FreeWriteComponent = () => {
         });
     };
 
+    const handleFileChange = (e) => {
+        setImageFile(e.target.files[0]);
+    };
+
     const handleSearch = () => {
         const { naver } = window;
         if (searchAddress) {
@@ -80,6 +86,12 @@ const FreeWriteComponent = () => {
         formData.location = selectedLocation;
 
         try {
+            // 이미지 파일 업로드 처리
+            if (imageFile) {
+                const url = await uploadImage(imageFile); // 서버로 파일을 업로드하고 URL을 받음
+                formData.photoUrl = url;
+            }
+
             await postFreeBoard(formData); // Free 게시판에 맞는 API 호출
             alert("게시글이 성공적으로 등록되었습니다!");
             navigate("/board/free");
@@ -152,13 +164,10 @@ const FreeWriteComponent = () => {
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">사진 URL</label>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">사진 업로드</label>
                     <input
-                        type="text"
-                        name="photoUrl"
-                        value={formData.photoUrl}
-                        onChange={handleChange}
-                        placeholder="사진 URL을 입력하세요"
+                        type="file"
+                        onChange={handleFileChange}
                         className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
                 </div>

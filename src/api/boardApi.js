@@ -211,3 +211,20 @@ export const deleteFreeBoard = async (pno) => {
         throw new Error('게시글 삭제에 실패했습니다.');
     }
 };
+
+export const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+        const response = await jwtAxios.post(`${API_SERVER_HOST}/api/files/upload`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        return response.data; // 서버에서 반환하는 이미지 URL
+    } catch (error) {
+        console.error("파일 업로드 실패:", error);
+        throw error;
+    }
+};
