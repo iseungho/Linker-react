@@ -65,3 +65,33 @@ export const removeMember = async (mno) => {
     const res = await jwtAxios.delete(`${host}/${mno}`);
     return res.data;
 }
+
+export const uploadProfileImage = async (mno, imageFile) => {
+    if (!mno) {
+        throw new Error("Member number (mno) is required");
+    }
+
+    console.log("upload", mno, imageFile);
+
+    const formData = new FormData();
+    formData.append("mno", mno);
+    formData.append("file", imageFile);
+    console.log("formData", formData);
+    const header = {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    }
+
+    const res = await axios.post(`${API_SERVER_HOST}/api/profiles/image/`, formData, header);
+    return res.data;
+}
+
+export const getProfileImage = async (mno) => {
+    if (!mno) {
+        throw new Error("Member number (mno) is required");
+    }
+
+    const res = await axios.get(`${API_SERVER_HOST}/api/profiles/image/${mno}`);
+    return res.data;
+}
