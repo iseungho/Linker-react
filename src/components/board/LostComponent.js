@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PageComponent from "../common/PageComponent";
-import { getAllLostBoard } from "../../api/boardApi";
+import {deleteLostBoard, getAllLostBoard} from "../../api/boardApi";
 import useCustomMove from "../../hooks/useCustomMove";
+import useCustomLogin from "../../hooks/useCustomLogin";
 import {Link} from "react-router-dom";
 
 const initListState = {
@@ -19,6 +20,7 @@ const initListState = {
 
 const LostComponent = () => {
     const { page, size, moveToLostPostList, refresh } = useCustomMove();
+    const { loginState } = useCustomLogin();
     const [serverData, setServerData] = useState(initListState);
     const [fetching, setFetching] = useState(false);
 
@@ -41,6 +43,22 @@ const LostComponent = () => {
         moveToLostPostList({ page: pageNum, size });
     };
 
+    const handleDelete = async (pno) => {
+        const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
+        if (confirmDelete) {
+            try {
+                await deleteLostBoard(pno);
+                alert("게시글이 삭제되었습니다.");
+                setServerData((prevData) => ({
+                    ...prevData,
+                    dtoList: prevData.dtoList.filter((post) => post.pno !== pno),
+                }));
+            } catch (error) {
+                alert("게시글 삭제에 실패했습니다.");
+            }
+        }
+    };
+
     return (
         <div className="board-list-container flex justify-center mt-24">
             <div className="board-list-wrapper w-2/3 sm:w-2/3 md:w-2/3 lg:w-3/5">
@@ -51,7 +69,33 @@ const LostComponent = () => {
 
                 {serverData.dtoList.map((post) => (
                     <div key={post.pno} className="board-item border-b border-gray-300 py-4">
-                        <h3 className="board-title text-xl font-semibold">{post.title}{post.commentCount > 0 && `[${post.commentCount}]`}</h3>
+                        <div className="flex justify-between items-center">
+                            <Link to={`/board/lost/${post.pno}`}>
+                                <h3 className="board-title text-xl font-semibold">
+                                    {post.title}
+                                    {post.commentCount > 0 && ` [${post.commentCount}]`}
+                                </h3>
+                            </Link>
+
+                            {/* 로그인한 사용자와 게시글 작성자가 같으면 수정/삭제 버튼 표시 */}
+                            {loginState.mno === post.mno && (
+                                <div className="flex space-x-2">
+                                    <Link
+                                        to={`/board/lost/modify/${post.pno}`}
+                                        className="text-gray-600 hover:underline text-sm"
+                                    >
+                                        수정
+                                    </Link>
+                                    <button
+                                        onClick={() => handleDelete(post.pno)}
+                                        className="text-red-600 hover:underline text-sm"
+                                    >
+                                        삭제
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+
                         <p className="board-content text-sm text-gray-600">{post.content}</p>
                     </div>
                 ))}

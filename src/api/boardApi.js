@@ -49,6 +49,28 @@ export const getFoundBoardById = async (param) => {
     }
 }
 
+export const getFreeBoardById = async (param) => {
+    const {pno} = param
+    try {
+        const response = await jwtAxios.get(`${freePath}/${pno}`);
+        console.log(response.data)
+        return response.data;
+    } catch (error) {
+        alert(error);
+    }
+}
+
+export const getLostBoardById = async (param) => {
+    const {pno} = param
+    try {
+        const response = await jwtAxios.get(`${lostPath}/${pno}`);
+        console.log(response.data)
+        return response.data;
+    } catch (error) {
+        alert(error);
+    }
+}
+
 export const postFoundBoard = async (boardData) => {
     try {
         const response = await jwtAxios.post(`${foundPath}/`, {
@@ -109,22 +131,83 @@ export const postLostBoard = async (boardData) => {
     }
 };
 
+export const modifyFoundBoard = async (pno, boardData) => {
+    try {
+        const response = await jwtAxios.put(`${foundPath}/${pno}`, {
+            title: boardData.title,
+            content: boardData.content,
+            categoryId: boardData.categoryId,
+            regionId: boardData.regionId,
+            location: boardData.location,
+            photoUrl: boardData.photoUrl
+        });
+
+        console.log("글 수정 성공:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("글 수정 실패:", error);
+        throw error;
+    }
+}
+
+export const modifyFreeBoard = async (pno, boardData) => {
+    try {
+        const response = await jwtAxios.put(`${freePath}/${pno}`, {
+            title: boardData.title,
+            content: boardData.content,
+            categoryId: boardData.categoryId,
+            regionId: boardData.regionId,
+            location: boardData.location,
+            photoUrl: boardData.photoUrl
+        });
+
+        console.log("글 수정 성공:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("글 수정 실패:", error);
+        throw error;
+    }
+}
+
+export const modifyLostBoard = async (pno, boardData) => {
+    try {
+        const response = await jwtAxios.put(`${lostPath}/${pno}`, {
+            title: boardData.title,
+            content: boardData.content,
+            categoryId: boardData.categoryId,
+            regionId: boardData.regionId,
+            location: boardData.location,
+            photoUrl: boardData.photoUrl
+        });
+
+        console.log("글 수정 성공:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("글 수정 실패:", error);
+        throw error;
+    }
+}
+
 export const deleteFoundBoard = async (pno) => {
     try {
         const response = await jwtAxios.delete(`${foundPath}/${pno}`);
         return response.data;
     } catch (error) {
-        alert(error);
+        throw new Error('게시글 삭제에 실패했습니다.');
     }
-}
-
-export const putFoundBoard = async (pno, boardData) => {
-    const formData = new FormData();
-    formData.append('title', boardData.title);
-    formData.append('content', boardData.content);
-    formData.append('ino', boardData.ino);
-
-    const response = await jwtAxios.put(`${foundPath}/${pno}`)
-
-    return response.data;
-}
+};
+export const deleteFreeBoard = async (pno) => {
+    try {
+        const response = await jwtAxios.delete(`${freePath}/${pno}`);
+        return response.data;
+    } catch (error) {
+        throw new Error('게시글 삭제에 실패했습니다.');
+    }
+};export const deleteLostBoard = async (pno) => {
+    try {
+        const response = await jwtAxios.delete(`${lostPath}/${pno}`);
+        return response.data;
+    } catch (error) {
+        throw new Error('게시글 삭제에 실패했습니다.');
+    }
+};

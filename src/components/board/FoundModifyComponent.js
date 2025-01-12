@@ -1,14 +1,21 @@
-import React, { useState, useRef, useEffect } from "react";
-import { postFoundBoard } from "../../api/boardApi";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getFoundBoardById, modifyFoundBoard } from "../../api/boardApi";
 import useCustomLogin from "../../hooks/useCustomLogin";
-import { geocodeAddress, reverseGeocodeAddress, initializeMap, updateMapLocation, addMapClickListener } from "../../util/mapUtil";
+import {
+    addMapClickListener,
+    geocodeAddress,
+    initializeMap,
+    reverseGeocodeAddress,
+    updateMapLocation
+} from "../../util/mapUtil";
 
-const FoundWriteComponent = () => {
+const FoundModifyComponent = () => {
+    const { pno } = useParams(); // 게시글 ID
     const navigate = useNavigate();
     const { loginState } = useCustomLogin();
 
-    const [selectedLocation, setSelectedLocation] = useState("경기도 성남시 분당구 판교로 227번길23 4&5층 SK쉴더스");
+    const [selectedLocation, setSelectedLocation] = useState("");
     const [searchAddress, setSearchAddress] = useState("");
 
     const mapRef = useRef(null);
@@ -18,7 +25,7 @@ const FoundWriteComponent = () => {
     useEffect(() => {
         const { naver } = window;
         if (naver) {
-            const initialLocation = new naver.maps.LatLng(37.5665, 126.978);
+            const initialLocation = new naver.maps.LatLng(37.5665, 126.978); // 기본 위치 설정
             const { newMap, newMarker } = initializeMap(mapRef, naver, initialLocation);
             setMap(newMap);
             setMarker(newMarker);
@@ -29,27 +36,48 @@ const FoundWriteComponent = () => {
         }
     }, []);
 
+    // 게시글 불러오기
     useEffect(() => {
-        const { naver } = window;
-        if (map && selectedLocation && marker && naver) {
-            geocodeAddress(selectedLocation, naver, (location) => {
-                const { newMap, newMarker } = updateMapLocation(map, marker, naver, location, mapRef);
-                setMap(newMap);
-                setMarker(newMarker);
-            });
-        }
-    }, [map, marker, selectedLocation]);
+        const fetchBoard = async () => {
+            try {
+                const response = await getFoundBoardById({ pno });
+                setFormData({
+                    title: response.title,
+                    content: response.content,
+                    categoryId: response.categoryId,
+                    regionId: response.regionId,
+                    location: response.location, // 기존 위치 값 설정
+                    photoUrl: response.photoUrl,
+                });
+
+                // 게시글 불러올 때 기존 주소가 있으면 지도에 표시
+                if (response.location) {
+                    const { naver } = window;
+                    geocodeAddress(response.location, naver, (location) => {
+                        const { newMap, newMarker } = updateMapLocation(map, marker, naver, location, mapRef);
+                        setMap(newMap);
+                        setMarker(newMarker);
+                        setSelectedLocation(response.location); // 위치 정보 설정
+                    });
+                }
+            } catch (error) {
+                alert("게시글을 불러오는 데 실패했습니다.");
+            }
+        };
+
+        fetchBoard();
+    }, [pno, map, marker]);
 
     const [formData, setFormData] = useState({
         title: "",
         content: "",
-        mno: loginState.mno,
         categoryId: 1,
         regionId: 1,
         location: "",
         photoUrl: "",
     });
 
+    // 입력 값 변경 처리
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -78,27 +106,33 @@ const FoundWriteComponent = () => {
         }
     };
 
-
-    const handleSubmit = async (e) => {
+    // 게시글 수정 처리
+    const handleUpdate = async (e) => {
         e.preventDefault();
-        formData.location = selectedLocation;
-
         try {
-            await postFoundBoard(formData);
-            alert("게시글이 성공적으로 등록되었습니다!");
-            navigate("/board/found");
+            const result = await modifyFoundBoard(pno, {
+                ...formData,
+                mno: loginState.mno,
+            });
+
+            if (result.RESULT === "SUCCESS") {
+                alert("게시글 수정 성공!");
+                navigate(`/board/found/`);
+            } else {
+                alert("게시글 수정 실패.");
+            }
         } catch (error) {
-            alert("게시글 등록에 실패했습니다.");
+            alert("수정 중 오류가 발생했습니다.");
         }
     };
 
     return (
         <div className="flex justify-center items-start min-h-screen bg-gray-100 p-4">
             <form
-                onSubmit={handleSubmit}
+                onSubmit={handleUpdate}
                 className="w-full md:w-3/5 bg-white shadow-md rounded px-8 pt-6 pb-8 mt-16 mb-4 flex flex-col"
             >
-                <h2 className="text-2xl font-bold mb-6 text-center">습득물 글쓰기</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center">습득물 수정</h2>
 
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">제목</label>
@@ -174,7 +208,7 @@ const FoundWriteComponent = () => {
                         type="submit"
                         className="px-6 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-400 transition duration-300"
                     >
-                        글쓰기
+                        수정 완료
                     </button>
                 </div>
             </form>
@@ -182,4 +216,4 @@ const FoundWriteComponent = () => {
     );
 };
 
-export default FoundWriteComponent;
+export default FoundModifyComponent;

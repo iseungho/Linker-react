@@ -10,6 +10,10 @@ const EachPost = lazy(() => import("../pages/eachpost/EachPost"))
 const FoundWrite = lazy(() => import("../pages/board/FoundWritePage"));
 const FreeWrite = lazy(() => import("../pages/board/FreeWritePage"));
 const LostWrite = lazy(() => import("../pages/board/LostWritePage"));
+const FoundModify = lazy(() => import("../pages/board/FoundModifyPage"));
+const FreeModify = lazy(() => import("../pages/board/FreeModifyPage"));
+const LostModify = lazy(() => import("../pages/board/LostModifyPage"));
+
 
 const boardRouter = () => {
     return [
@@ -46,6 +50,18 @@ const boardRouter = () => {
         {
             path: "lost/write",
             element: <Suspense fallback={Loading}><LostWrite /></Suspense>
+        },
+        {
+            path: "found/modify/:pno",
+            element: <Suspense fallback={Loading}><FoundModify /></Suspense>
+        },
+        {
+            path: "free/modify/:pno",
+            element: <Suspense fallback={Loading}><FreeModify /></Suspense>
+        },
+        {
+            path: "lost/modify/:pno",
+            element: <Suspense fallback={Loading}><LostModify /></Suspense>
         },
     ];
 };
