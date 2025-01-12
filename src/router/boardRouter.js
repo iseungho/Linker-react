@@ -1,4 +1,5 @@
 import { Suspense, lazy } from "react";
+import CommentComponents from "../components/board/comment/CommentComponents";
 
 const Loading = <div className="loading-image"></div>;
 
@@ -23,11 +24,11 @@ const boardRouter = () => {
         },
         {
             path: "found",
-            element: <Suspense fallback={Loading}><FoundBoard /></Suspense>,
+            element: <Suspense fallback={Loading}><CommentComponents postId={1} /></Suspense>,
         },
         // {
         //     path: "found",
-        //     element: <Suspense fallback={Loading}><EachPost/></Suspense>,
+        //     element: <Suspense fallback={Loading}><FoundBoard /></Suspense>,
         // },
         {
             path: "found/:pno",

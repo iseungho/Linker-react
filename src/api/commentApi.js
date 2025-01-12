@@ -3,9 +3,11 @@ import { API_SERVER_HOST } from "./memberApi";
 
 const commentPath = `${API_SERVER_HOST}/api/comments`;
 
-export const getCommentById = async (id) => {
+export const getCommentById = async (postId) => {
     try {
-        const response = await jwtAxios.get(`${commentPath}/${id}`);
+        console.log("getCommentById에 넘어온 postId",postId);
+        const response = await jwtAxios.get(`${commentPath}/${postId}`);
+        console.log(response);
         return response.data;
     } catch (error) {
         throw new Error("getById Error");
