@@ -4,6 +4,7 @@ import {deleteFoundBoard, getAllFoundBoard} from "../../../api/boardApi";
 import useCustomMove from "../../../hooks/useCustomMove";
 import { Link } from "react-router-dom";
 import useCustomLogin from "../../../hooks/useCustomLogin";
+import CommentComponents from "../comment/CommentComponents";
 
 const initListState = {
     dtoList: [],
@@ -108,8 +109,12 @@ const FoundComponent = () => {
                             </div>
                         </div>
 
-                        <p className="board-content text-sm text-gray-600">{post.content}</p>
+                        <p className="board-content text-sm text-gray-600">
+                            {post.content}
+                        </p>
                     </div>
+
+                    
                 ))}
 
                 <div className="flex justify-end">
