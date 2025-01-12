@@ -21,10 +21,10 @@ const CommentComponents = ({postId}) => {
         const fetchComment = async () => {
             try {
                 const response2 = await getCommentByPostId(postId);
-                const response = await getCommentById(postId);
+                // const response = await getCommentById(postId);
                 setComments(response2);    
-                setComment(response);
-                setEditContent(response);
+                // setComment(response);
+                // setEditContent(response);
             } catch (error) {
                 throw new Error("Comment.js에서 실패했습니다", error);
             }

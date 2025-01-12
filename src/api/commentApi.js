@@ -11,7 +11,7 @@ export const getCommentByPostId = async (postId) => {
         console.log(response);
         return response.data;
     } catch (error) {
-        throw new Error("getById Error");
+        throw new Error("getByPostId Error");
     }
 }
 
