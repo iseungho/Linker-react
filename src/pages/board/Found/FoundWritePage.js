@@ -1,7 +1,7 @@
 import React from "react";
-import BasicLayout from '../../layouts/BasicLayout';
+import BasicLayout from '../../../layouts/BasicLayout';
 
-import FoundWriteComponent from "../../components/board/FoundWriteComponent";
+import FoundWriteComponent from "../../../components/board/Found/FoundWriteComponent";
 
 const FoundWritePage = () => {
     return (

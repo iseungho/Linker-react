@@ -1,7 +1,7 @@
 import React from "react";
-import BasicLayout from '../../layouts/BasicLayout';
+import BasicLayout from '../../../layouts/BasicLayout';
 
-import LostModifyComponent from "../../components/board/LostModifyComponent";
+import LostModifyComponent from "../../../components/board/Lost/LostModifyComponent";
 
 const LostModifyPage = () => {
     return (

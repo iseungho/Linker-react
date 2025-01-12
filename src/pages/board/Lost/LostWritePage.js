@@ -1,7 +1,7 @@
 import React from "react";
-import BasicLayout from '../../layouts/BasicLayout';
+import BasicLayout from '../../../layouts/BasicLayout';
 
-import LostWriteComponent from "../../components/board/LostWriteComponent";
+import LostWriteComponent from "../../../components/board/Lost/LostWriteComponent";
 
 const LostWritePage = () => {
     return (

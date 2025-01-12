@@ -1,6 +1,6 @@
 import React from 'react';
-import BasicLayout from '../../layouts/BasicLayout';
-import FreeComponent from '../../components/board/FreeComponent';
+import BasicLayout from '../../../layouts/BasicLayout';
+import FreeComponent from '../../../components/board/Free/FreeComponent';
 
 const FreeBoard = () => {
     return (

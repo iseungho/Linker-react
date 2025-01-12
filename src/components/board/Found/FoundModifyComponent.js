@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getFreeBoardById, modifyFreeBoard} from "../../api/boardApi";
-import useCustomLogin from "../../hooks/useCustomLogin";
+import { getFoundBoardById, modifyFoundBoard } from "../../../api/boardApi";
+import useCustomLogin from "../../../hooks/useCustomLogin";
 import {
     addMapClickListener,
     geocodeAddress,
     initializeMap,
     reverseGeocodeAddress,
     updateMapLocation
-} from "../../util/mapUtil";
+} from "../../../util/mapUtil";
 
-const FreeModifyComponent = () => {
+const FoundModifyComponent = () => {
     const { pno } = useParams(); // 게시글 ID
     const navigate = useNavigate();
     const { loginState } = useCustomLogin();
@@ -40,7 +40,7 @@ const FreeModifyComponent = () => {
     useEffect(() => {
         const fetchBoard = async () => {
             try {
-                const response = await getFreeBoardById({ pno });
+                const response = await getFoundBoardById({ pno });
                 setFormData({
                     title: response.title,
                     content: response.content,
@@ -110,14 +110,14 @@ const FreeModifyComponent = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const result = await modifyFreeBoard(pno, {
+            const result = await modifyFoundBoard(pno, {
                 ...formData,
                 mno: loginState.mno,
             });
 
             if (result.RESULT === "SUCCESS") {
                 alert("게시글 수정 성공!");
-                navigate(`/board/free/`);
+                navigate(`/board/found/`);
             } else {
                 alert("게시글 수정 실패.");
             }
@@ -216,4 +216,4 @@ const FreeModifyComponent = () => {
     );
 };
 
-export default FreeModifyComponent;
+export default FoundModifyComponent;

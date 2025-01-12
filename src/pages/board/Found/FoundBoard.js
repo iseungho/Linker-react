@@ -1,6 +1,6 @@
 import React from 'react';
-import BasicLayout from '../../layouts/BasicLayout';
-import FoundComponent from '../../components/board/FoundComponent';
+import BasicLayout from '../../../layouts/BasicLayout';
+import FoundComponent from '../../../components/board/Found/FoundComponent';
 
 const FoundBoard = () => {
     return (

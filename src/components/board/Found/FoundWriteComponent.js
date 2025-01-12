@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { postFreeBoard } from "../../api/boardApi";
+import { postFoundBoard } from "../../../api/boardApi";
 import { useNavigate } from "react-router-dom";
-import useCustomLogin from "../../hooks/useCustomLogin";
-import { geocodeAddress, reverseGeocodeAddress, initializeMap, updateMapLocation, addMapClickListener } from "../../util/mapUtil";
+import useCustomLogin from "../../../hooks/useCustomLogin";
+import { geocodeAddress, reverseGeocodeAddress, initializeMap, updateMapLocation, addMapClickListener } from "../../../util/mapUtil";
 
-const FreeWriteComponent = () => {
+const FoundWriteComponent = () => {
     const navigate = useNavigate();
     const { loginState } = useCustomLogin();
 
@@ -44,7 +44,7 @@ const FreeWriteComponent = () => {
         title: "",
         content: "",
         mno: loginState.mno,
-        categoryId: 2, // Free 게시판에 맞는 카테고리 ID로 설정
+        categoryId: 1,
         regionId: 1,
         location: "",
         photoUrl: "",
@@ -60,12 +60,15 @@ const FreeWriteComponent = () => {
 
     const handleSearch = () => {
         const { naver } = window;
+        // 주소가 비어있지 않다면
         if (searchAddress) {
             geocodeAddress(searchAddress, naver, (location) => {
+                // 위치 변경 및 지도 업데이트
                 const { newMap, newMarker } = updateMapLocation(map, marker, naver, location, mapRef);
                 setMap(newMap);
                 setMarker(newMarker);
 
+                // 선택된 위치 업데이트
                 reverseGeocodeAddress(location, naver, (roadAddress) => {
                     setSelectedLocation(roadAddress);
                 });
@@ -75,14 +78,15 @@ const FreeWriteComponent = () => {
         }
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         formData.location = selectedLocation;
 
         try {
-            await postFreeBoard(formData); // Free 게시판에 맞는 API 호출
+            await postFoundBoard(formData);
             alert("게시글이 성공적으로 등록되었습니다!");
-            navigate("/board/free");
+            navigate("/board/found");
         } catch (error) {
             alert("게시글 등록에 실패했습니다.");
         }
@@ -94,7 +98,8 @@ const FreeWriteComponent = () => {
                 onSubmit={handleSubmit}
                 className="w-full md:w-3/5 bg-white shadow-md rounded px-8 pt-6 pb-8 mt-16 mb-4 flex flex-col"
             >
-                <h2 className="text-2xl font-bold mb-6 text-center">자유게시판 글쓰기</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center">습득물 글쓰기</h2>
+
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">제목</label>
                     <input
@@ -122,7 +127,7 @@ const FreeWriteComponent = () => {
                 </div>
 
                 <div className="mb-4">
-                    <div ref={mapRef} style={{width: "100%", height: "400px"}}></div>
+                    <div ref={mapRef} style={{ width: "100%", height: "400px" }}></div>
                 </div>
                 {selectedLocation && (
                     <div className="mb-4 text-gray-500">
@@ -130,6 +135,7 @@ const FreeWriteComponent = () => {
                         {selectedLocation}
                     </div>
                 )}
+
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2 mr-4">위치</label>
                     <div className="flex">
@@ -176,4 +182,4 @@ const FreeWriteComponent = () => {
     );
 };
 
-export default FreeWriteComponent;
+export default FoundWriteComponent;

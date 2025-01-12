@@ -3,16 +3,16 @@ import { Suspense, lazy } from "react";
 const Loading = <div className="loading-image"></div>;
 
 // Lazy load components
-const LostBoard = lazy(() => import("../pages/board/LostBoard"));
-const FoundBoard = lazy(() => import("../pages/board/FoundBoard"));
-const FreeBoard = lazy(() => import("../pages/board/FreeBoard"));
+const LostBoard = lazy(() => import("../pages/board/Lost/LostBoard"));
+const FoundBoard = lazy(() => import("../pages/board/Found/FoundBoard"));
+const FreeBoard = lazy(() => import("../pages/board/Free/FreeBoard"));
 const EachPost = lazy(() => import("../pages/eachpost/EachPost"))
-const FoundWrite = lazy(() => import("../pages/board/FoundWritePage"));
-const FreeWrite = lazy(() => import("../pages/board/FreeWritePage"));
-const LostWrite = lazy(() => import("../pages/board/LostWritePage"));
-const FoundModify = lazy(() => import("../pages/board/FoundModifyPage"));
-const FreeModify = lazy(() => import("../pages/board/FreeModifyPage"));
-const LostModify = lazy(() => import("../pages/board/LostModifyPage"));
+const FoundWrite = lazy(() => import("../pages/board/Found/FoundWritePage"));
+const FreeWrite = lazy(() => import("../pages/board/Free/FreeWritePage"));
+const LostWrite = lazy(() => import("../pages/board/Lost/LostWritePage"));
+const FoundModify = lazy(() => import("../pages/board/Found/FoundModifyPage"));
+const FreeModify = lazy(() => import("../pages/board/Free/FreeModifyPage"));
+const LostModify = lazy(() => import("../pages/board/Lost/LostModifyPage"));
 
 
 const boardRouter = () => {

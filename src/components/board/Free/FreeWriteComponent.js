@@ -1,21 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { getFoundBoardById, modifyFoundBoard } from "../../api/boardApi";
-import useCustomLogin from "../../hooks/useCustomLogin";
-import {
-    addMapClickListener,
-    geocodeAddress,
-    initializeMap,
-    reverseGeocodeAddress,
-    updateMapLocation
-} from "../../util/mapUtil";
+import React, { useState, useRef, useEffect } from "react";
+import { postFreeBoard } from "../../../api/boardApi";
+import { useNavigate } from "react-router-dom";
+import useCustomLogin from "../../../hooks/useCustomLogin";
+import { geocodeAddress, reverseGeocodeAddress, initializeMap, updateMapLocation, addMapClickListener } from "../../../util/mapUtil";
 
-const FoundModifyComponent = () => {
-    const { pno } = useParams(); // 게시글 ID
+const FreeWriteComponent = () => {
     const navigate = useNavigate();
     const { loginState } = useCustomLogin();
 
-    const [selectedLocation, setSelectedLocation] = useState("");
+    const [selectedLocation, setSelectedLocation] = useState("경기도 성남시 분당구 판교로 227번길23 4&5층 SK쉴더스");
     const [searchAddress, setSearchAddress] = useState("");
 
     const mapRef = useRef(null);
@@ -25,7 +18,7 @@ const FoundModifyComponent = () => {
     useEffect(() => {
         const { naver } = window;
         if (naver) {
-            const initialLocation = new naver.maps.LatLng(37.5665, 126.978); // 기본 위치 설정
+            const initialLocation = new naver.maps.LatLng(37.5665, 126.978);
             const { newMap, newMarker } = initializeMap(mapRef, naver, initialLocation);
             setMap(newMap);
             setMarker(newMarker);
@@ -36,48 +29,27 @@ const FoundModifyComponent = () => {
         }
     }, []);
 
-    // 게시글 불러오기
     useEffect(() => {
-        const fetchBoard = async () => {
-            try {
-                const response = await getFoundBoardById({ pno });
-                setFormData({
-                    title: response.title,
-                    content: response.content,
-                    categoryId: response.categoryId,
-                    regionId: response.regionId,
-                    location: response.location, // 기존 위치 값 설정
-                    photoUrl: response.photoUrl,
-                });
-
-                // 게시글 불러올 때 기존 주소가 있으면 지도에 표시
-                if (response.location) {
-                    const { naver } = window;
-                    geocodeAddress(response.location, naver, (location) => {
-                        const { newMap, newMarker } = updateMapLocation(map, marker, naver, location, mapRef);
-                        setMap(newMap);
-                        setMarker(newMarker);
-                        setSelectedLocation(response.location); // 위치 정보 설정
-                    });
-                }
-            } catch (error) {
-                alert("게시글을 불러오는 데 실패했습니다.");
-            }
-        };
-
-        fetchBoard();
-    }, [pno, map, marker]);
+        const { naver } = window;
+        if (map && selectedLocation && marker && naver) {
+            geocodeAddress(selectedLocation, naver, (location) => {
+                const { newMap, newMarker } = updateMapLocation(map, marker, naver, location, mapRef);
+                setMap(newMap);
+                setMarker(newMarker);
+            });
+        }
+    }, [map, marker, selectedLocation]);
 
     const [formData, setFormData] = useState({
         title: "",
         content: "",
-        categoryId: 1,
+        mno: loginState.mno,
+        categoryId: 2, // Free 게시판에 맞는 카테고리 ID로 설정
         regionId: 1,
         location: "",
         photoUrl: "",
     });
 
-    // 입력 값 변경 처리
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -88,15 +60,12 @@ const FoundModifyComponent = () => {
 
     const handleSearch = () => {
         const { naver } = window;
-        // 주소가 비어있지 않다면
         if (searchAddress) {
             geocodeAddress(searchAddress, naver, (location) => {
-                // 위치 변경 및 지도 업데이트
                 const { newMap, newMarker } = updateMapLocation(map, marker, naver, location, mapRef);
                 setMap(newMap);
                 setMarker(newMarker);
 
-                // 선택된 위치 업데이트
                 reverseGeocodeAddress(location, naver, (roadAddress) => {
                     setSelectedLocation(roadAddress);
                 });
@@ -106,34 +75,26 @@ const FoundModifyComponent = () => {
         }
     };
 
-    // 게시글 수정 처리
-    const handleUpdate = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const result = await modifyFoundBoard(pno, {
-                ...formData,
-                mno: loginState.mno,
-            });
+        formData.location = selectedLocation;
 
-            if (result.RESULT === "SUCCESS") {
-                alert("게시글 수정 성공!");
-                navigate(`/board/found/`);
-            } else {
-                alert("게시글 수정 실패.");
-            }
+        try {
+            await postFreeBoard(formData); // Free 게시판에 맞는 API 호출
+            alert("게시글이 성공적으로 등록되었습니다!");
+            navigate("/board/free");
         } catch (error) {
-            alert("수정 중 오류가 발생했습니다.");
+            alert("게시글 등록에 실패했습니다.");
         }
     };
 
     return (
         <div className="flex justify-center items-start min-h-screen bg-gray-100 p-4">
             <form
-                onSubmit={handleUpdate}
+                onSubmit={handleSubmit}
                 className="w-full md:w-3/5 bg-white shadow-md rounded px-8 pt-6 pb-8 mt-16 mb-4 flex flex-col"
             >
-                <h2 className="text-2xl font-bold mb-6 text-center">습득물 수정</h2>
-
+                <h2 className="text-2xl font-bold mb-6 text-center">자유게시판 글쓰기</h2>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">제목</label>
                     <input
@@ -161,7 +122,7 @@ const FoundModifyComponent = () => {
                 </div>
 
                 <div className="mb-4">
-                    <div ref={mapRef} style={{ width: "100%", height: "400px" }}></div>
+                    <div ref={mapRef} style={{width: "100%", height: "400px"}}></div>
                 </div>
                 {selectedLocation && (
                     <div className="mb-4 text-gray-500">
@@ -169,7 +130,6 @@ const FoundModifyComponent = () => {
                         {selectedLocation}
                     </div>
                 )}
-
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2 mr-4">위치</label>
                     <div className="flex">
@@ -208,7 +168,7 @@ const FoundModifyComponent = () => {
                         type="submit"
                         className="px-6 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-400 transition duration-300"
                     >
-                        수정 완료
+                        글쓰기
                     </button>
                 </div>
             </form>
@@ -216,4 +176,4 @@ const FoundModifyComponent = () => {
     );
 };
 
-export default FoundModifyComponent;
+export default FreeWriteComponent;
