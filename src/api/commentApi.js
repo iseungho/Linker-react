@@ -24,11 +24,13 @@ export const deleteComment = async (id) => {
 }
 
 // postId는 줘야할까요?
-export const modifyComment = async (id,commentData) => {
+export const modifyComment = async (commentData) => {
     try {
-        const response = await jwtAxios.put(`${commentPath}/${id}`,
+        const response = await jwtAxios.post(`${commentPath}/`,
             {
+                mno: commentData.mno,
                 content: commentData.content,
+                postId: commentData.postId
             }
         )
         return response.data;
@@ -39,9 +41,11 @@ export const modifyComment = async (id,commentData) => {
 
 export const createComment = async (commentData) => {
     try {
-        const response = await jwtAxios.post(`${commentPath}/`,
+        const response = await jwtAxios.put(`${commentPath}/`,
             {
+                mno: commentData.mno,
                 content: commentData.content,
+                postId: commentData.postId
             }
         )
         return response.data;

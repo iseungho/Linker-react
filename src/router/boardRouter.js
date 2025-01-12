@@ -22,14 +22,14 @@ const boardRouter = () => {
             path: "lost",
             element: <Suspense fallback={Loading}><LostBoard /></Suspense>
         },
-        {
-            path: "found",
-            element: <Suspense fallback={Loading}><CommentComponents postId={1} /></Suspense>,
-        },
         // {
         //     path: "found",
-        //     element: <Suspense fallback={Loading}><FoundBoard /></Suspense>,
+        //     element: <Suspense fallback={Loading}><CommentComponents postId={1} /></Suspense>,
         // },
+        {
+            path: "found",
+            element: <Suspense fallback={Loading}><FoundBoard /></Suspense>,
+        },
         {
             path: "found/:pno",
             element: <Suspense fallback={Loading}>
