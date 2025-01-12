@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { deleteComment, getCommentById, modifyComment } from '../../../api/commentApi';
+import { deleteComment, getCommentById, getCommentByPostId, modifyComment } from '../../../api/commentApi';
 import styled from 'styled-components';
 
 const initState = {
@@ -12,15 +12,18 @@ const initState = {
 const CommentComponents = ({postId}) => {
 
     // 댓글
-    const [comments,setComments] = useState(initState);
+    const [comments,setComments] = useState([]);
+    const [comment, setComment] = useState(initState);
     const [editContent, setEditContent] = useState(initState);
     const [newContent, setNewContent] = useState(initState);
 
     useEffect(() => {
         const fetchComment = async () => {
             try {
+                const response2 = await getCommentByPostId(postId);
                 const response = await getCommentById(postId);
-                setComments(response);    
+                setComments(response2);    
+                setComment(response);
                 setEditContent(response);
             } catch (error) {
                 throw new Error("Comment.js에서 실패했습니다", error);
@@ -44,9 +47,9 @@ const CommentComponents = ({postId}) => {
                 ...newContent,
             };
             await modifyComment(uploadComment);
-            setComments(uploadComment); 
+            setComment(uploadComment); 
         } catch (error) {
-            console.error('댓글 생성 실패:', error);
+            console.error('댓글 추가 실패:', error);
         }
     }
 
@@ -56,7 +59,6 @@ const CommentComponents = ({postId}) => {
                 ...editContent,
             };
             await modifyComment(updatedComment);
-            setComments(updatedComment); 
         } catch (error) {
             console.error('댓글 수정 실패:', error);
         }
@@ -78,16 +80,18 @@ const CommentComponents = ({postId}) => {
 
     return (
         <Container>
-            <div style={{border: '1px solid black'}}>
-                <p>{comments.content}</p>
-                <p>{comments.mno}</p>
-                <p>{comments.postId}</p>
-            </div>
+            {/* {Array.isArray(comments) ? comments.map((post) => (
+                <div key={post.id} style={{border: '1px solid black'}}>
+                    <p>{post.content}</p>
+                    <p>{post.mno}</p>
+                    <p>{post.postId}</p>
+                </div>
+            )) : <p>댓글 로딩중</p>} */}
             
             <div>
                 <div style={{ border: '1px solid black', marginTop: '30px' }}>
                     <label>
-                        댓글 수정 : 
+                        댓글 추가 : 
                         <input
                             type="text"
                             value={editContent.content}
@@ -96,7 +100,7 @@ const CommentComponents = ({postId}) => {
                         />
                     </label>
                     <button onClick={handlePut} style={{ marginLeft: '10px' }}>
-                        수정하기
+                        추가하기
                     </button>
                 </div>
             </div>
@@ -105,7 +109,7 @@ const CommentComponents = ({postId}) => {
             <div>
                 <div style={{ border: '1px solid black', marginTop: '30px' }}>
                     <label>
-                        댓글 추가 : 
+                        댓글 수정 : 
                         <input
                             type="text"
                             value={newContent.content}
@@ -114,7 +118,7 @@ const CommentComponents = ({postId}) => {
                         />
                     </label>
                     <button onClick={handlePost} style={{ marginLeft: '10px' }}>
-                        추가하기
+                        수정하기
                     </button>
                 </div>
             </div>

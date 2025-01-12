@@ -2,17 +2,30 @@ import jwtAxios from "../util/jwtUtil";
 import { API_SERVER_HOST } from "./memberApi";
 
 const commentPath = `${API_SERVER_HOST}/api/comments`;
+const postCommentPath = `${API_SERVER_HOST}/post`;
 
-export const getCommentById = async (postId) => {
+export const getCommentByPostId = async (postId) => {
     try {
-        console.log("getCommentById에 넘어온 postId",postId);
-        const response = await jwtAxios.get(`${commentPath}/${postId}`);
+        // console.log("getCommentById에 넘어온 postId",postId);
+        const response = await jwtAxios.get(`${[postCommentPath]}/${postId}`);
         console.log(response);
         return response.data;
     } catch (error) {
         throw new Error("getById Error");
     }
 }
+
+export const getCommentById = async (Id) => {
+    try {
+        // console.log("getCommentById에 넘어온 postId",postId);
+        const response = await jwtAxios.get(`${commentPath}/${Id}`);
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        throw new Error("getById Error");
+    }
+}
+
 
 export const deleteComment = async (id) => {
     try {

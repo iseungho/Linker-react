@@ -4,7 +4,6 @@ import {deleteFoundBoard, getAllFoundBoard} from "../../../api/boardApi";
 import useCustomMove from "../../../hooks/useCustomMove";
 import { Link } from "react-router-dom";
 import useCustomLogin from "../../../hooks/useCustomLogin";
-import CommentComponents from "../comment/CommentComponents";
 
 const initListState = {
     dtoList: [],
