@@ -6,7 +6,7 @@ const Loading = <div className="loading-image"></div>;
 const LostBoard = lazy(() => import("../pages/board/Lost/LostBoard"));
 const FoundBoard = lazy(() => import("../pages/board/Found/FoundBoard"));
 const FreeBoard = lazy(() => import("../pages/board/Free/FreeBoard"));
-const EachPost = lazy(() => import("../pages/eachpost/EachPost"))
+const EachPost = lazy(() => import("../pages/eachPost/EachPost"));
 const FoundWrite = lazy(() => import("../pages/board/Found/FoundWritePage"));
 const FreeWrite = lazy(() => import("../pages/board/Free/FreeWritePage"));
 const LostWrite = lazy(() => import("../pages/board/Lost/LostWritePage"));

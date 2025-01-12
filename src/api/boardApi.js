@@ -1,5 +1,5 @@
 import jwtAxios from "../util/jwtUtil";
-import { API_SERVER_HOST } from "./memberApi";
+import {API_SERVER_HOST} from "./memberApi";
 
 const foundPath = `${API_SERVER_HOST}/api/found`
 const lostPath = `${API_SERVER_HOST}/api/lost`
@@ -39,9 +39,8 @@ export const getAllFreeBoard = async () => {
 }
 
 export const getFoundBoardById = async (param) => {
-    const {pno} = param
     try {
-        const response = await jwtAxios.get(`${foundPath}/${pno}`);
+        const response = await jwtAxios.get(`${foundPath}/${param}`);
         console.log(response.data)
         return response.data;
     } catch (error) {
