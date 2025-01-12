@@ -1,18 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { postFoundBoard } from "../../api/boardApi";
 import { useNavigate } from "react-router-dom";
 import useCustomLogin from "../../hooks/useCustomLogin";
+import { geocodeAddress, reverseGeocodeAddress, initializeMap, updateMapLocation, addMapClickListener } from "../../util/mapUtil";
 
 const FoundWriteComponent = () => {
     const navigate = useNavigate();
     const { loginState } = useCustomLogin();
 
+    const [selectedLocation, setSelectedLocation] = useState("경기도 성남시 분당구 판교로 227번길23 4&5층 SK쉴더스");
+    const [searchAddress, setSearchAddress] = useState("");
+
+    const mapRef = useRef(null);
+    const [map, setMap] = useState(null);
+    const [marker, setMarker] = useState(null);
+
+    useEffect(() => {
+        const { naver } = window;
+        if (naver) {
+            const initialLocation = new naver.maps.LatLng(37.5665, 126.978);
+            const { newMap, newMarker } = initializeMap(mapRef, naver, initialLocation);
+            setMap(newMap);
+            setMarker(newMarker);
+
+            addMapClickListener(newMap, newMarker, naver, (roadAddress) => {
+                setSelectedLocation(roadAddress);
+            });
+        }
+    }, []);
+
+    useEffect(() => {
+        const { naver } = window;
+        if (map && selectedLocation && marker && naver) {
+            geocodeAddress(selectedLocation, naver, (location) => {
+                const { newMap, newMarker } = updateMapLocation(map, marker, naver, location, mapRef);
+                setMap(newMap);
+                setMarker(newMarker);
+            });
+        }
+    }, [map, marker, selectedLocation]);
+
     const [formData, setFormData] = useState({
         title: "",
         content: "",
-        mno: loginState.mno, // 작성자 ID
-        categoryId: 1, // 임시 기본값
-        regionId: 1, // 임시 기본값
+        mno: loginState.mno,
+        categoryId: 1,
+        regionId: 1,
         location: "",
         photoUrl: "",
     });
@@ -25,31 +58,50 @@ const FoundWriteComponent = () => {
         });
     };
 
+    const handleSearch = () => {
+        const { naver } = window;
+        // 주소가 비어있지 않다면
+        if (searchAddress) {
+            geocodeAddress(searchAddress, naver, (location) => {
+                // 위치 변경 및 지도 업데이트
+                const { newMap, newMarker } = updateMapLocation(map, marker, naver, location, mapRef);
+                setMap(newMap);
+                setMarker(newMarker);
+
+                // 선택된 위치 업데이트
+                reverseGeocodeAddress(location, naver, (roadAddress) => {
+                    setSelectedLocation(roadAddress);
+                });
+            });
+        } else {
+            alert("주소를 입력하세요");
+        }
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        formData.location = selectedLocation;
 
         try {
             await postFoundBoard(formData);
             alert("게시글이 성공적으로 등록되었습니다!");
-            navigate("/board/found"); // 작성 후 목록 페이지로 이동
+            navigate("/board/found");
         } catch (error) {
             alert("게시글 등록에 실패했습니다.");
         }
     };
 
     return (
-        <div div className="flex justify-center items-start min-h-screen bg-gray-100 p-4">
+        <div className="flex justify-center items-start min-h-screen bg-gray-100 p-4">
             <form
                 onSubmit={handleSubmit}
                 className="w-full md:w-3/5 bg-white shadow-md rounded px-8 pt-6 pb-8 mt-16 mb-4 flex flex-col"
             >
                 <h2 className="text-2xl font-bold mb-6 text-center">습득물 글쓰기</h2>
 
-                {/* 제목 입력 */}
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                        제목
-                    </label>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">제목</label>
                     <input
                         type="text"
                         name="title"
@@ -61,11 +113,8 @@ const FoundWriteComponent = () => {
                     />
                 </div>
 
-                {/* 내용 입력 */}
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                        내용
-                    </label>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">내용</label>
                     <textarea
                         name="content"
                         value={formData.content}
@@ -77,26 +126,38 @@ const FoundWriteComponent = () => {
                     />
                 </div>
 
-                {/* 위치 입력 */}
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                        위치
-                    </label>
-                    <input
-                        type="text"
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
-                        placeholder="습득 장소를 입력하세요"
-                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                    />
+                    <div ref={mapRef} style={{ width: "100%", height: "400px" }}></div>
+                </div>
+                {selectedLocation && (
+                    <div className="mb-4 text-gray-500">
+                        <span className="font-bold">선택된 위치: </span>
+                        {selectedLocation}
+                    </div>
+                )}
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2 mr-4">위치</label>
+                    <div className="flex">
+                        <input
+                            type="text"
+                            name="location"
+                            value={searchAddress}
+                            onChange={(e) => setSearchAddress(e.target.value)}
+                            placeholder="정확한 도로명 주소를 검색하세요"
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                        <button
+                            type="button"
+                            onClick={handleSearch}
+                            className="ml-6 px-6 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-400 transition duration-300 flex-shrink-0"
+                        >
+                            검색
+                        </button>
+                    </div>
                 </div>
 
-                {/* 사진 URL 입력 */}
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                        사진 URL
-                    </label>
+                    <label className="block text-gray-700 text-sm font-bold mb-2">사진 URL</label>
                     <input
                         type="text"
                         name="photoUrl"
@@ -107,7 +168,6 @@ const FoundWriteComponent = () => {
                     />
                 </div>
 
-                {/* 제출 버튼 */}
                 <div className="flex justify-end">
                     <button
                         type="submit"
