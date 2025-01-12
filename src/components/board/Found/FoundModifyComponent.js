@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getFoundBoardById, modifyFoundBoard } from "../../api/boardApi";
-import useCustomLogin from "../../hooks/useCustomLogin";
+import { getFoundBoardById, modifyFoundBoard } from "../../../api/boardApi";
+import useCustomLogin from "../../../hooks/useCustomLogin";
 import {
     addMapClickListener,
     geocodeAddress,
     initializeMap,
     reverseGeocodeAddress,
     updateMapLocation
-} from "../../util/mapUtil";
+} from "../../../util/mapUtil";
 
-const ModifyComponent = () => {
+const FoundModifyComponent = () => {
     const { pno } = useParams(); // 게시글 ID
     const navigate = useNavigate();
     const { loginState } = useCustomLogin();
@@ -109,6 +109,8 @@ const ModifyComponent = () => {
     // 게시글 수정 처리
     const handleUpdate = async (e) => {
         e.preventDefault();
+        formData.location = selectedLocation;
+
         try {
             const result = await modifyFoundBoard(pno, {
                 ...formData,
@@ -216,4 +218,4 @@ const ModifyComponent = () => {
     );
 };
 
-export default ModifyComponent;
+export default FoundModifyComponent;

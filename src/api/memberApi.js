@@ -71,12 +71,10 @@ export const uploadProfileImage = async (mno, imageFile) => {
         throw new Error("Member number (mno) is required");
     }
 
-    console.log("upload", mno, imageFile);
 
     const formData = new FormData();
     formData.append("mno", mno);
     formData.append("file", imageFile);
-    console.log("formData", formData);
     const header = {
         headers: {
             "Content-Type": "multipart/form-data"

@@ -94,7 +94,7 @@ const LostComponent = () => {
                                     {loginState.mno === post.mno && (
                                         <div className="flex space-x-3">
                                             <Link
-                                                to={`/board/modify/${post.pno}`}
+                                                to={`/board/lost/modify/${post.pno}`}
                                                 className="text-gray-600 hover:text-blue-500 text-sm"
                                             >
                                                 수정

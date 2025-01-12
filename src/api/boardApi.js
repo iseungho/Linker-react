@@ -11,7 +11,6 @@ export const getAllFoundBoard = async (pageParam) => {
 
     try {
         const response = await jwtAxios.get(`${foundPath}/`, { params: { page, size } });
-        console.log(response.data)
         return response.data;
     } catch (error) {
         alert(error);
@@ -23,7 +22,6 @@ export const getAllLostBoard = async (pageParam) => {
 
     try {
         const response = await jwtAxios.get(`${lostPath}/`, { params: { page, size } });
-        console.log(response.data)
         return response.data;
     } catch (error) {
         alert(error);
@@ -35,7 +33,6 @@ export const getAllFreeBoard = async (pageParam) => {
 
     try {
         const response = await jwtAxios.get(`${freePath}/`, { params: { page, size } });
-        console.log(response.data)
         return response.data;
     } catch (error) {
         alert(error);
@@ -46,7 +43,6 @@ export const getFoundBoardById = async (param) => {
     const {pno} = param
     try {
         const response = await jwtAxios.get(`${foundPath}/${pno}`);
-        console.log(response.data)
         return response.data;
     } catch (error) {
         alert(error);
@@ -56,7 +52,6 @@ export const getFoundBoardById = async (param) => {
 export const getFoundBoardByPno = async (param) => {
     try {
         const response = await jwtAxios.get(`${foundPath}/${param}`);
-        console.log(response.data)
         return response.data;
     } catch (error) {
         alert(error);
@@ -67,7 +62,6 @@ export const getFreeBoardById = async (param) => {
     const {pno} = param
     try {
         const response = await jwtAxios.get(`${freePath}/${pno}`);
-        console.log(response.data)
         return response.data;
     } catch (error) {
         alert(error);
@@ -78,7 +72,6 @@ export const getLostBoardById = async (param) => {
     const {pno} = param
     try {
         const response = await jwtAxios.get(`${lostPath}/${pno}`);
-        console.log(response.data)
         return response.data;
     } catch (error) {
         alert(error);
@@ -97,10 +90,8 @@ export const postFoundBoard = async (boardData) => {
             photoUrl: boardData.photoUrl,
             postType: "FOUND",
         });
-        console.log("글 작성 성공:", response.data);
         return response.data;
     } catch (error) {
-        console.error("글 작성 실패:", error);
         throw error;
     }
 };
@@ -117,10 +108,8 @@ export const postFreeBoard = async (boardData) => {
             photoUrl: boardData.photoUrl,
             postType: "FREE",
         });
-        console.log("글 작성 성공:", response.data);
         return response.data;
     } catch (error) {
-        console.error("글 작성 실패:", error);
         throw error;
     }
 };
@@ -137,10 +126,8 @@ export const postLostBoard = async (boardData) => {
             photoUrl: boardData.photoUrl,
             postType: "LOST",
         });
-        console.log("글 작성 성공:", response.data);
         return response.data;
     } catch (error) {
-        console.error("글 작성 실패:", error);
         throw error;
     }
 };
@@ -155,11 +142,8 @@ export const modifyFoundBoard = async (pno, boardData) => {
             location: boardData.location,
             photoUrl: boardData.photoUrl
         });
-
-        console.log("글 수정 성공:", response.data);
         return response.data;
     } catch (error) {
-        console.error("글 수정 실패:", error);
         throw error;
     }
 }
@@ -174,11 +158,8 @@ export const modifyFreeBoard = async (pno, boardData) => {
             location: boardData.location,
             photoUrl: boardData.photoUrl
         });
-
-        console.log("글 수정 성공:", response.data);
         return response.data;
     } catch (error) {
-        console.error("글 수정 실패:", error);
         throw error;
     }
 }
@@ -194,10 +175,8 @@ export const modifyLostBoard = async (pno, boardData) => {
             photoUrl: boardData.photoUrl
         });
 
-        console.log("글 수정 성공:", response.data);
         return response.data;
     } catch (error) {
-        console.error("글 수정 실패:", error);
         throw error;
     }
 }
