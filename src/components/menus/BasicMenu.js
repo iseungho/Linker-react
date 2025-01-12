@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import React, {useCallback, useState} from "react";
+import React, { useCallback, useState } from "react";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import LoginModal from "../member/LoginModal"; // useCustomLogin 훅을 가져옵니다.
 
@@ -24,6 +24,15 @@ const BasicMenu = ({ children }) => {
         moveToPath("/");
     }, [doLogout, moveToPath]);
 
+    const handleBoardLinkClick = useCallback((event, path) => {
+        if (!loginState.email) {
+            event.preventDefault(); // 링크 클릭 기본 동작을 막음
+            openModal(); // 로그인 모달을 열음
+        } else {
+            navigate(path); // 로그인되어 있으면 정상적으로 이동
+        }
+    }, [loginState.email, navigate]);
+
     return (
         <div>
             <nav id='navbar' className="fixed w-full space-x-6 top-0 left-0 z-50 bg-gray-100 shadow-md select-none">
@@ -34,13 +43,13 @@ const BasicMenu = ({ children }) => {
                     >
                     </button>
                     <div className="flex space-x-6">
-                        <Link to={'/board/lost'} className="text-gray-700 hover:text-black text-sm">
+                        <Link to={'/board/lost'} className="text-gray-700 hover:text-black text-sm" onClick={(e) => handleBoardLinkClick(e, '/board/lost')}>
                             분실물 게시판
                         </Link>
-                        <Link to={'/board/found'} className="text-gray-700 hover:text-black text-sm">
+                        <Link to={'/board/found'} className="text-gray-700 hover:text-black text-sm" onClick={(e) => handleBoardLinkClick(e, '/board/found')}>
                             습득물 게시판
                         </Link>
-                        <Link to={'/board/free'} className="text-gray-700 hover:text-black text-sm">
+                        <Link to={'/board/free'} className="text-gray-700 hover:text-black text-sm" onClick={(e) => handleBoardLinkClick(e, '/board/free')}>
                             자유게시판
                         </Link>
                     </div>
@@ -51,7 +60,7 @@ const BasicMenu = ({ children }) => {
                                 onClick={openModal}>
                                 Login
                             </button>
-                            <LoginModal isOpen={isModalOpen} onClose={closeModal}/>
+                            <LoginModal isOpen={isModalOpen} onClose={closeModal} />
                         </div>
                     ) : (
                         <div className="flex">
@@ -75,6 +84,5 @@ const BasicMenu = ({ children }) => {
         </div>
     );
 }
-
 
 export default BasicMenu;
